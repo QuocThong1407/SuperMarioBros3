@@ -1,0 +1,24 @@
+# Build files
+*.exe
+*.pdb
+*.obj
+*.idb
+*.suo
+*.user
+*.log
+*.aps
+*.ncb
+*.sdf
+*.opensdf
+
+# Visual Studio folders
+.vs/
+.vscode/
+Debug/
+Release/
+x64/
+ipch/
+
+# Other temp files
+*.tlog/
+*.lastbuildstate
