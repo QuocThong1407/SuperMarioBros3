@@ -3,6 +3,7 @@
 assets\data\objects\mario.txt
 assets\data\objects\platform.txt
 assets\data\objects\question_brick.txt
+assets\data\objects\coin.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type

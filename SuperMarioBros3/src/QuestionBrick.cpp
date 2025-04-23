@@ -1,6 +1,7 @@
 
 #include "QuestionBrick.h"
 #include "PlayScene.h"
+#include "Coin.h"
 
 void CQuestionBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
@@ -58,11 +59,15 @@ void CQuestionBrick::SetState(int state)
 		ay = QUESTION_BRICK_GRAVITY;
 
 		LPGAME game = CGame::GetInstance();
+		LPPLAYSCENE scene = (LPPLAYSCENE)game->GetCurrentScene();
 
 		switch (item)
 		{
 		case QUESTION_BRICK_ITEM_COIN:
 		{
+			CCoin* coin = new CCoin(x, y - 8);
+			coin->SetState(COIN_STATE_JUMP);
+			scene->AddObject(coin);
 			break;
 		}
 		default:
