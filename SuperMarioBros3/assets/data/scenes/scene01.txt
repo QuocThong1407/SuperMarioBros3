@@ -2,6 +2,7 @@
 [ASSETS]
 assets\data\objects\mario.txt
 assets\data\objects\platform.txt
+assets\data\objects\question_brick.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -187,6 +188,21 @@ assets\data\objects\platform.txt
 5	2192	144	16	16	2	100530	100520	100525	0
 5	2192	160	16	16	2	100540	100520	100525	0
 5	2192	176	16	16	2	100555	100550	100550	0
+
+# QUESTION BRICK
+6	176	128	1
+6	192	128	1
+
+6	224	80	1
+6	240	80	1
+
+6	416	96	1
+
+6	656	160	1
+
+6	704	128	1
+
+6	1472	144	1
 
 # MAIN GROUND
 5	0	192	16	16	39	100000	100005	100010	1

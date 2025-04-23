@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
+#include "QuestionBrick.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -136,6 +137,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			sprite_begin, sprite_middle, sprite_end
 		);
 
+		break;
+	}
+
+	case OBJECT_TYPE_QUESTION_BRICK: 
+	{
+		int item = QUESTION_BRICK_ITEM_COIN;
+		if (tokens.size() > 3)
+			item = atoi(tokens[3].c_str());
+		obj = new CQuestionBrick(x, y, item);
 		break;
 	}
 
