@@ -4,6 +4,7 @@ assets\data\objects\mario.txt
 assets\data\objects\platform.txt
 assets\data\objects\question_brick.txt
 assets\data\objects\coin.txt
+assets\data\objects\tunnel.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -204,6 +205,23 @@ assets\data\objects\coin.txt
 6	704	128	1
 
 6	1472	144	1
+
+# TUNNEL
+7	352	160	2
+
+7	1792	176	1
+
+7	1856	160	2
+
+7	2264	176	3
+
+7	2264	64	3
+
+7	2264	33	3
+
+7	2264	2	3
+
+7	2320	176	1
 
 # MAIN GROUND
 5	0	192	16	16	39	100000	100005	100010	1

@@ -10,6 +10,7 @@
 #include "Coin.h"
 #include "Platform.h"
 #include "QuestionBrick.h"
+#include "Tunnel.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -146,6 +147,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		if (tokens.size() > 3)
 			item = atoi(tokens[3].c_str());
 		obj = new CQuestionBrick(x, y, item);
+		break;
+	}
+
+	case OBJECT_TYPE_TUNNEL:
+	{
+		int tunnel_type = TUNNEL_STATE_LONG;
+		if (tokens.size() > 3)
+			tunnel_type = atoi(tokens[3].c_str());
+		obj = new CTunnel(x, y, tunnel_type);
 		break;
 	}
 
