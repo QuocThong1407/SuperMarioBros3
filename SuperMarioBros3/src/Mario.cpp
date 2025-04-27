@@ -8,6 +8,7 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "QuestionBrick.h"
+#include "SuperMushroom.h"
 
 #include "Collision.h"
 
@@ -56,6 +57,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
+	else if (dynamic_cast<CSuperMushroom*>(e->obj))
+		OnCollisionWithSuperMushroom(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -112,6 +115,13 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	if (e->ny > 0) {
 		questionBrick->Unbox();
 	}
+}
+
+void CMario::OnCollisionWithSuperMushroom(LPCOLLISIONEVENT e) {
+	CSuperMushroom* mushroom = dynamic_cast<CSuperMushroom*>(e->obj);
+	SetLevel(MARIO_LEVEL_BIG);
+
+	mushroom->Delete();
 }
 
 //

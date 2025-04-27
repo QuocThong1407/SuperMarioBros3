@@ -5,6 +5,7 @@ assets\data\objects\platform.txt
 assets\data\objects\question_brick.txt
 assets\data\objects\coin.txt
 assets\data\objects\tunnel.txt
+assets\data\objects\super_mushroom.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -196,7 +197,7 @@ assets\data\objects\tunnel.txt
 6	192	128	1
 
 6	224	80	1
-6	240	80	1
+6	240	80	2
 
 6	416	96	1
 

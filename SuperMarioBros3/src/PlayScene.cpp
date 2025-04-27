@@ -11,6 +11,7 @@
 #include "Platform.h"
 #include "QuestionBrick.h"
 #include "Tunnel.h"
+#include "SuperMushroom.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -156,6 +157,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		if (tokens.size() > 3)
 			tunnel_type = atoi(tokens[3].c_str());
 		obj = new CTunnel(x, y, tunnel_type);
+		break;
+	}
+
+	case OBJECT_TYPE_SUPER_MUSHROOM:
+	{
+		obj = new CSuperMushroom(x, y);
 		break;
 	}
 

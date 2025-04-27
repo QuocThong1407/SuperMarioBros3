@@ -2,6 +2,7 @@
 #include "QuestionBrick.h"
 #include "PlayScene.h"
 #include "Coin.h"
+#include "SuperMushroom.h"
 
 void CQuestionBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
@@ -68,6 +69,12 @@ void CQuestionBrick::SetState(int state)
 			CCoin* coin = new CCoin(x, y - 8);
 			coin->SetState(COIN_STATE_JUMP);
 			scene->AddObject(coin);
+			break;
+		}
+		case QUESTION_BRICK_ITEM_MUSHROOM:
+		{
+			CSuperMushroom* mushroom = new CSuperMushroom(x, y - 32);
+			scene->AddObject(mushroom);
 			break;
 		}
 		default:
