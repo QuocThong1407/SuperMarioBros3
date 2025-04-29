@@ -12,6 +12,7 @@
 #include "QuestionBrick.h"
 #include "Tunnel.h"
 #include "SuperMushroom.h"
+#include "PiranhaPlant.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -165,6 +166,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SUPER_MUSHROOM:
 	{
 		obj = new CSuperMushroom(x, y);
+		break;
+	}
+
+	case OBJECT_TYPE_PIRANHA_PLANT:
+	{
+		obj = new CPiranhaPlant(x, y);
 		break;
 	}
 

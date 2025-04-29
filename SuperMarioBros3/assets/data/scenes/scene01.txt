@@ -6,6 +6,7 @@ assets\data\objects\question_brick.txt
 assets\data\objects\coin.txt
 assets\data\objects\tunnel.txt
 assets\data\objects\super_mushroom.txt
+assets\data\objects\piranha_plant.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -206,6 +207,9 @@ assets\data\objects\super_mushroom.txt
 6	704	128	1
 
 6	1472	144	1
+
+# PIRANHA PLANT
+9	352	154
 
 # TUNNEL
 7	352	160	2
