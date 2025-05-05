@@ -1,6 +1,7 @@
 #include "PiranhaPlant.h"
 #include "PlayScene.h"
 #include "Mario.h"
+#include "Bullet.h"
 
 void CPiranhaPlant::GetBoundingBox(float& l, float& t, float& r, float& b) {
 	l = x - PIRANHA_PLANT_BBOX_WIDTH / 2;
@@ -70,6 +71,13 @@ void CPiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			y = minY;
 			vy = 0;
+
+			if (!hasShot && GetTickCount64() - timeShootStart >= PIRANHA_PLANT_RELOAD_TIME)
+			{
+				Shoot();
+				hasShot = true;
+			}
+
 			if (GetTickCount64() - timeUpStart >= PIRANHA_PLANT_TIME_UP)
 				SetState(PIRANHA_PLANT_STATE_DOWN);
 		}
@@ -86,4 +94,16 @@ void CPiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	y += vy * dt;
+}
+
+void CPiranhaPlant::Shoot() {
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (!mario) return;
+
+	float mx, my;
+	mario->GetPosition(mx, my);
+
+	CBullet* bullet = new CBullet(x, y, mx, my - 8);
+	scene->AddObject(bullet);
 }

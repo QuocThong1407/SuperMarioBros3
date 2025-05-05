@@ -7,6 +7,7 @@ assets\data\objects\coin.txt
 assets\data\objects\tunnel.txt
 assets\data\objects\super_mushroom.txt
 assets\data\objects\piranha_plant.txt
+assets\data\objects\bullet.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type

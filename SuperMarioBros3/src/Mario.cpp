@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "QuestionBrick.h"
 #include "SuperMushroom.h"
+#include "Bullet.h"
 
 #include "Collision.h"
 
@@ -59,6 +60,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQuestionBrick(e);
 	else if (dynamic_cast<CSuperMushroom*>(e->obj))
 		OnCollisionWithSuperMushroom(e);
+	else if (dynamic_cast<CBullet*>(e->obj))
+		OnCollisionWithBullet(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -122,6 +125,19 @@ void CMario::OnCollisionWithSuperMushroom(LPCOLLISIONEVENT e) {
 	SetLevel(MARIO_LEVEL_BIG);
 
 	mushroom->Delete();
+}
+
+void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e) {
+	CBullet* bullet = dynamic_cast<CBullet*>(e->obj);
+
+	if (level == MARIO_LEVEL_BIG) {
+		SetLevel(MARIO_LEVEL_SMALL);
+	}
+	else if (level == MARIO_LEVEL_SMALL) {
+		SetState(MARIO_STATE_DIE);
+	}
+
+	bullet->Delete();
 }
 
 //
