@@ -8,6 +8,7 @@ assets\data\objects\tunnel.txt
 assets\data\objects\super_mushroom.txt
 assets\data\objects\piranha_plant.txt
 assets\data\objects\bullet.txt
+assets\data\objects\paragoomba.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -228,6 +229,9 @@ assets\data\objects\bullet.txt
 7	2264	2	3
 
 7	2320	176	1
+
+# PARAGOOMBA
+10	1056	160
 
 # MAIN GROUND
 5	0	192	16	16	39	100000	100005	100010	1

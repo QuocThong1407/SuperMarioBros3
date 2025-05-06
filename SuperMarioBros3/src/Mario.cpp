@@ -10,6 +10,7 @@
 #include "QuestionBrick.h"
 #include "SuperMushroom.h"
 #include "Bullet.h"
+#include "Paragoomba.h"
 
 #include "Collision.h"
 
@@ -62,6 +63,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithSuperMushroom(e);
 	else if (dynamic_cast<CBullet*>(e->obj))
 		OnCollisionWithBullet(e);
+	else if (dynamic_cast<CParagoomba*>(e->obj))
+		OnCollisionWithParagoomba(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -138,6 +141,46 @@ void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e) {
 	}
 
 	bullet->Delete();
+}
+
+void CMario::OnCollisionWithParagoomba(LPCOLLISIONEVENT e) {
+	CParagoomba* paragoomba = dynamic_cast<CParagoomba*>(e->obj);
+
+	if (e->ny < 0)
+	{
+		if (paragoomba->GetState() != PARAGOOMBA_STATE_DIE)
+		{
+			if (paragoomba->GetState() == PARAGOOMBA_STATE_FLYING)
+			{
+				paragoomba->SetState(PARAGOOMBA_STATE_WALKING);
+			}
+			else
+			{
+				paragoomba->SetState(PARAGOOMBA_STATE_DIE);
+			}
+
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+	}
+	else
+	{
+		if (untouchable == 0)
+		{
+			if (paragoomba->GetState() != PARAGOOMBA_STATE_DIE)
+			{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+			}
+		}
+	}
 }
 
 //
