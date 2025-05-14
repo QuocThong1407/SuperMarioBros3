@@ -11,6 +11,7 @@
 #include "SuperMushroom.h"
 #include "Bullet.h"
 #include "Paragoomba.h"
+#include "Koopa.h"
 
 #include "Collision.h"
 
@@ -65,6 +66,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBullet(e);
 	else if (dynamic_cast<CParagoomba*>(e->obj))
 		OnCollisionWithParagoomba(e);
+	else if (dynamic_cast<CKoopa*>(e->obj))
+		OnCollisionWithKoopa(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -178,6 +181,35 @@ void CMario::OnCollisionWithParagoomba(LPCOLLISIONEVENT e) {
 					DebugOut(L">>> Mario DIE >>> \n");
 					SetState(MARIO_STATE_DIE);
 				}
+			}
+		}
+	}
+}
+
+void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
+	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+	if (!koopa || koopa->IsDeleted()) return;
+
+	if (e->ny < 0)
+	{
+		if (!koopa->IsDefend())
+		{
+			koopa->SetState(KOOPA_STATE_DEFEND);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+	}
+	else if (e->nx != 0)
+	{
+		if(untouchable == 0)
+		{
+			if (level > MARIO_LEVEL_SMALL)
+			{
+				level = MARIO_LEVEL_SMALL;
+				StartUntouchable();
+			}
+			else
+			{
+				SetState(MARIO_STATE_DIE);
 			}
 		}
 	}

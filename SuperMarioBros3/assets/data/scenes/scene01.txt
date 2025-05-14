@@ -9,6 +9,7 @@ assets\data\objects\super_mushroom.txt
 assets\data\objects\piranha_plant.txt
 assets\data\objects\bullet.txt
 assets\data\objects\paragoomba.txt
+assets\data\objects\koopa.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -232,6 +233,9 @@ assets\data\objects\paragoomba.txt
 
 # PARAGOOMBA
 10	1056	160
+
+# KOOPA
+11	560	134
 
 # MAIN GROUND
 5	0	192	16	16	39	100000	100005	100010	1
