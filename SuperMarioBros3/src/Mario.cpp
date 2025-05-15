@@ -29,7 +29,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable = 0;
 	}
 
+	if (dynamic_cast<CKoopa*>(item)) {
+		CKoopa* heldKoopa = dynamic_cast<CKoopa*>(item);
+
+		float MARIO_WIDTH = (level > MARIO_LEVEL_SMALL) ? MARIO_BIG_BBOX_WIDTH : MARIO_SMALL_BBOX_WIDTH;
+		float heldKoopaX = nx > 0 ? x + MARIO_WIDTH / 2 + 5 : x - MARIO_WIDTH / 2 - 5;
+		float heldKoopaY = y - 2;
+
+		heldKoopa->SetPosition(heldKoopaX, heldKoopaY);
+	}
+
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+	DropItem();
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -205,9 +216,17 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 	}
 	else if (e->nx != 0)
 	{
-		if (koopa->IsDefend() && !koopa->IsKicked())
+		if (koopa->IsDefend() && !koopa->IsKicked() && !koopa->IsHeld())
 		{
-			koopa->BeKicked(nx > 0 ? KOOPA_KICK_SPEED : -KOOPA_KICK_SPEED);
+			if (CGame::GetInstance()->IsKeyDown(DIK_A) && item == nullptr)
+			{
+				item = dynamic_cast<CKoopa*>(koopa);
+				koopa->SetState(KOOPA_STATE_HELD);
+			}
+			else
+			{
+				koopa->BeKicked(nx > 0 ? KOOPA_KICK_SPEED : -KOOPA_KICK_SPEED);
+			}
 		}
 		else if (koopa->IsKicked() || !koopa->IsDefend())
 		{
@@ -224,6 +243,19 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 				}
 			}
 		}
+	}
+}
+
+void CMario::DropItem() {
+	if (item == nullptr) return;
+
+	if (!CGame::GetInstance()->IsKeyDown(DIK_A)) {
+		if (dynamic_cast<CKoopa*>(item)) {
+			CKoopa* heldKoopa = dynamic_cast<CKoopa*>(item);
+			heldKoopa->SetState(KOOPA_STATE_KICKED);
+			heldKoopa->BeKicked(nx > 0 ? KOOPA_KICK_SPEED : -KOOPA_KICK_SPEED);
+		}
+		item = nullptr;
 	}
 }
 

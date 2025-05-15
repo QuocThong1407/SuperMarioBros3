@@ -108,6 +108,8 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 
+	CGameObject* item;
+
 	int level; 
 	int untouchable; 
 	ULONGLONG untouchable_start;
@@ -158,4 +160,6 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
+	void DropItem();
 };

@@ -55,7 +55,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     else if (isComeback)
     {
         if (GetTickCount64() - comeback_start > KOOPA_COMEBACK_TIMEOUT) {
-            y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
+            AdjustPositionAfterDefend();
             SetState(KOOPA_STATE_WALKING);
         }
     }
@@ -93,6 +93,7 @@ void CKoopa::SetState(int state)
         isDefend = false;
         isComeback = false;
         isKicked = false;
+        isHeld = false;
         break;
 
     case KOOPA_STATE_DEFEND:
@@ -100,12 +101,14 @@ void CKoopa::SetState(int state)
         isDefend = true;
         isComeback = false;
         isKicked = false;
+        isHeld = false;
         defend_start = GetTickCount64();
         break;
 
     case KOOPA_STATE_COMEBACK:
         isComeback = true;
         isKicked = false;
+        isHeld = false;
         comeback_start = GetTickCount64();
         break;
 
@@ -113,7 +116,14 @@ void CKoopa::SetState(int state)
         isKicked = true;
         isDefend = true;
         isComeback = false;
+        isHeld = false;
         vx = KOOPA_KICK_SPEED * nx;
+        break;
+
+    case KOOPA_STATE_HELD:
+        vx = 0;
+        vy = 0;
+        isHeld = true;
         break;
     }
 }
@@ -122,6 +132,11 @@ void CKoopa::BeKicked(float direction)
 {
     nx = direction > 0 ? 1 : -1;
     SetState(KOOPA_STATE_KICKED);
+}
+
+void CKoopa::AdjustPositionAfterDefend()
+{
+    y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
 }
 
 void CKoopa::CheckForEdge(vector<LPGAMEOBJECT>* coObjects) {

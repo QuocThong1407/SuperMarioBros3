@@ -20,6 +20,7 @@
 #define KOOPA_STATE_DEFEND 200
 #define KOOPA_STATE_COMEBACK 300
 #define KOOPA_STATE_KICKED 400
+#define KOOPA_STATE_HELD 500
 
 #define ID_ANI_KOOPA_WALKING_RIGHT 18001
 #define ID_ANI_KOOPA_WALKING_LEFT 18002
@@ -63,6 +64,9 @@ public:
 	bool IsDefend() { return isDefend; }
 	bool IsKicked() { return isKicked; }
 	bool IsComeback() { return isComeback; }
+	bool IsHeld() { return isHeld; }
 	int IsCollidable() override { return 1; };
 	int IsBlocking() override { return !isDefend; }
+	
+	void AdjustPositionAfterDefend();
 };
