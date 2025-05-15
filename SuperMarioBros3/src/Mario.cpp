@@ -197,19 +197,31 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 			koopa->SetState(KOOPA_STATE_DEFEND);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
+		else if (koopa->IsKicked())
+		{
+			koopa->SetState(KOOPA_STATE_DEFEND);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
 	}
 	else if (e->nx != 0)
 	{
-		if(untouchable == 0)
+		if (koopa->IsDefend() && !koopa->IsKicked())
 		{
-			if (level > MARIO_LEVEL_SMALL)
+			koopa->BeKicked(nx > 0 ? KOOPA_KICK_SPEED : -KOOPA_KICK_SPEED);
+		}
+		else if (koopa->IsKicked() || !koopa->IsDefend())
+		{
+			if (untouchable == 0)
 			{
-				level = MARIO_LEVEL_SMALL;
-				StartUntouchable();
-			}
-			else
-			{
-				SetState(MARIO_STATE_DIE);
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					SetState(MARIO_STATE_DIE);
+				}
 			}
 		}
 	}

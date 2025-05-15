@@ -60,7 +60,8 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         }
     }
 
-    CheckForEdge(coObjects);
+    if (!isDefend) 
+        CheckForEdge(coObjects);
 
     CGameObject::Update(dt, coObjects);
     CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -71,7 +72,7 @@ void CKoopa::Render()
     int aniId = ID_ANI_KOOPA_WALKING_LEFT;
 
     if (isDefend) {
-        aniId = isComeback ? ID_ANI_KOOPA_COMEBACK : ID_ANI_KOOPA_DEFEND;
+        aniId = isComeback ? ID_ANI_KOOPA_COMEBACK : (isKicked ? ID_ANI_KOOPA_KICKED : ID_ANI_KOOPA_DEFEND);
     }
     else if (vx > 0)
         aniId = ID_ANI_KOOPA_WALKING_RIGHT;
@@ -91,20 +92,36 @@ void CKoopa::SetState(int state)
         vx = -KOOPA_WALKING_SPEED;
         isDefend = false;
         isComeback = false;
+        isKicked = false;
         break;
 
     case KOOPA_STATE_DEFEND:
         vx = 0;
         isDefend = true;
         isComeback = false;
+        isKicked = false;
         defend_start = GetTickCount64();
         break;
 
     case KOOPA_STATE_COMEBACK:
         isComeback = true;
+        isKicked = false;
         comeback_start = GetTickCount64();
         break;
+
+    case KOOPA_STATE_KICKED:
+        isKicked = true;
+        isDefend = true;
+        isComeback = false;
+        vx = KOOPA_KICK_SPEED * nx;
+        break;
     }
+}
+
+void CKoopa::BeKicked(float direction)
+{
+    nx = direction > 0 ? 1 : -1;
+    SetState(KOOPA_STATE_KICKED);
 }
 
 void CKoopa::CheckForEdge(vector<LPGAMEOBJECT>* coObjects) {
@@ -135,4 +152,5 @@ void CKoopa::CheckForEdge(vector<LPGAMEOBJECT>* coObjects) {
         vx = -vx;
     }
 }
+
 

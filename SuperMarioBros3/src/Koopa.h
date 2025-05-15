@@ -19,11 +19,13 @@
 #define KOOPA_STATE_WALKING 100
 #define KOOPA_STATE_DEFEND 200
 #define KOOPA_STATE_COMEBACK 300
+#define KOOPA_STATE_KICKED 400
 
 #define ID_ANI_KOOPA_WALKING_RIGHT 18001
 #define ID_ANI_KOOPA_WALKING_LEFT 18002
 #define ID_ANI_KOOPA_DEFEND 18003
 #define ID_ANI_KOOPA_COMEBACK 18004
+#define ID_ANI_KOOPA_KICKED 18005
 
 class CKoopa : public CGameObject
 {
@@ -54,10 +56,13 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e) override;
 	void CheckForEdge(vector<LPGAMEOBJECT>* coObjects);
 
+	void BeKicked(float dir);
+
 	void SetState(int state) override;
 
 	bool IsDefend() { return isDefend; }
+	bool IsKicked() { return isKicked; }
 	bool IsComeback() { return isComeback; }
 	int IsCollidable() override { return 1; };
-	int IsBlocking() override { return 0; }
+	int IsBlocking() override { return !isDefend; }
 };
