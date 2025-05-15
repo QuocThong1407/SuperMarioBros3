@@ -4,6 +4,8 @@
 #include "Platform.h"
 #include "Brick.h"
 #include "QuestionBrick.h"
+#include "Goomba.h"
+#include "Paragoomba.h"
 
 void CKoopa::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
@@ -118,6 +120,11 @@ void CKoopa::SetState(int state)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+    if (dynamic_cast<CGoomba*>(e->obj))
+        OnCollisionWithEnemy(e);
+    if (dynamic_cast<CParagoomba*>(e->obj))
+        OnCollisionWithEnemy(e);
+
     if (!e->obj->IsBlocking()) return;
     if (dynamic_cast<CKoopa*>(e->obj)) return;
 
@@ -129,7 +136,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
     }
 
     if (dynamic_cast<CQuestionBrick*>(e->obj))
-        OnCollisionWithQuestionBrick(e);
+        OnCollisionWithQuestionBrick(e);   
 }
 
 void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
@@ -147,6 +154,32 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
         }
     }
 }
+
+void CKoopa::OnCollisionWithEnemy(LPCOLLISIONEVENT e) {
+    if (!isKicked) return;
+
+    if (e->nx != 0) {
+        if (dynamic_cast<CGoomba*>(e->obj))
+        {
+            CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+            goomba->SetState(GOOMBA_STATE_DIE);
+        }
+
+        if (dynamic_cast<CParagoomba*>(e->obj))
+        {
+            CParagoomba* pgoomba = dynamic_cast<CParagoomba*>(e->obj);
+            if (pgoomba->GetState() == PARAGOOMBA_STATE_FLYING)
+            {
+                pgoomba->SetState(PARAGOOMBA_STATE_WALKING);
+            }
+            else
+            {
+                pgoomba->SetState(PARAGOOMBA_STATE_DIE);
+            }
+        }
+    }
+}
+
 
 void CKoopa::BeKicked(float direction)
 {

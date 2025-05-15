@@ -4,6 +4,7 @@ assets\data\objects\mario.txt
 assets\data\objects\platform.txt
 assets\data\objects\question_brick.txt
 assets\data\objects\coin.txt
+assets\data\objects\goomba.txt
 assets\data\objects\tunnel.txt
 assets\data\objects\super_mushroom.txt
 assets\data\objects\piranha_plant.txt
@@ -230,6 +231,11 @@ assets\data\objects\koopa.txt
 7	2264	2	3
 
 7	2320	176	1
+
+# GOOMBA
+2	576	176
+2	860	160
+2	760	160
 
 # PARAGOOMBA
 10	1056	160
