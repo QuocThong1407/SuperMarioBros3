@@ -3,6 +3,7 @@
 #include "Mario.h"
 #include "Platform.h"
 #include "Brick.h"
+#include "QuestionBrick.h"
 
 void CKoopa::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
@@ -25,19 +26,6 @@ void CKoopa::GetBoundingBox(float& l, float& t, float& r, float& b)
 void CKoopa::OnNoCollision(DWORD dt) {
     x += vx * dt;
     y += vy * dt;
-}
-
-void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-    if (!e->obj->IsBlocking()) return;
-    if (dynamic_cast<CKoopa*>(e->obj)) return;
-
-    if (e->ny != 0) vy = 0;
-    else if (e->nx != 0)
-    {
-        vx = -vx;
-        nx = -nx;
-    }
 }
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -128,6 +116,38 @@ void CKoopa::SetState(int state)
     }
 }
 
+void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+    if (!e->obj->IsBlocking()) return;
+    if (dynamic_cast<CKoopa*>(e->obj)) return;
+
+    if (e->ny != 0) vy = 0;
+    else if (e->nx != 0)
+    {
+        vx = -vx;
+        nx = -nx;
+    }
+
+    if (dynamic_cast<CQuestionBrick*>(e->obj))
+        OnCollisionWithQuestionBrick(e);
+}
+
+void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+    if (!e->obj->IsBlocking()) return;
+
+    CQuestionBrick* qb = dynamic_cast<CQuestionBrick*>(e->obj);
+    if (!qb) return;
+
+    if (this->IsKicked() && e->nx != 0)
+    {
+        if (!qb->GetIsUnboxed())
+        {
+            qb->SetState(QUESTION_BRICK_STATE_UNBOXING);
+        }
+    }
+}
+
 void CKoopa::BeKicked(float direction)
 {
     nx = direction > 0 ? 1 : -1;
@@ -167,5 +187,6 @@ void CKoopa::CheckForEdge(vector<LPGAMEOBJECT>* coObjects) {
         vx = -vx;
     }
 }
+
 
 

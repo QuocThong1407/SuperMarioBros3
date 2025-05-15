@@ -55,6 +55,7 @@ public:
 	void Render() override;
 	void OnNoCollision(DWORD dt) override;
 	void OnCollisionWith(LPCOLLISIONEVENT e) override;
+	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void CheckForEdge(vector<LPGAMEOBJECT>* coObjects);
 
 	void BeKicked(float dir);
