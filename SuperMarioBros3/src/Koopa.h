@@ -40,12 +40,19 @@ protected:
 	ULONGLONG comeback_start = -1;
 
 public:
-	CKoopa(float x, float y);
+	CKoopa(float x, float y) : CGameObject(x, y) {
+		ax = 0;
+		ay = KOOPA_GRAVITY;
+		nx = -1;
+		SetState(KOOPA_STATE_WALKING);
+	}
+
 	void GetBoundingBox(float& l, float& t, float& r, float& b) override;
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) override;
 	void Render() override;
 	void OnNoCollision(DWORD dt) override;
 	void OnCollisionWith(LPCOLLISIONEVENT e) override;
+	void CheckForEdge(vector<LPGAMEOBJECT>* coObjects);
 
 	void SetState(int state) override;
 

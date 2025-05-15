@@ -34,6 +34,7 @@ public:
 	void RenderBoundingBox();
 
 	int IsDirectionColliable(float nx, float ny);
+	int IsBlocking() override { return isBlocking; }
 };
 
 typedef CPlatform* LPPLATFORM;

@@ -4,17 +4,40 @@
 #include "Platform.h"
 #include "Brick.h"
 
-CKoopa::CKoopa(float x, float y) : CGameObject(x, y)
+void CKoopa::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-    ax = 0;
-    ay = KOOPA_GRAVITY;
-    nx = -1;
-    SetState(KOOPA_STATE_WALKING);
+    if (isDefend)
+    {
+        l = x - KOOPA_BBOX_WIDTH / 2;
+        t = y - KOOPA_BBOX_HEIGHT_DEFEND / 2;
+        r = l + KOOPA_BBOX_WIDTH;
+        b = t + KOOPA_BBOX_HEIGHT_DEFEND;
+    }
+    else
+    {
+        l = x - KOOPA_BBOX_WIDTH / 2;
+        t = y - KOOPA_BBOX_HEIGHT / 2;
+        r = l + KOOPA_BBOX_WIDTH;
+        b = t + KOOPA_BBOX_HEIGHT;
+    }
 }
 
 void CKoopa::OnNoCollision(DWORD dt) {
     x += vx * dt;
     y += vy * dt;
+}
+
+void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+    if (!e->obj->IsBlocking()) return;
+    if (dynamic_cast<CKoopa*>(e->obj)) return;
+
+    if (e->ny != 0) vy = 0;
+    else if (e->nx != 0)
+    {
+        vx = -vx;
+        nx = -nx;
+    }
 }
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -36,6 +59,8 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
             SetState(KOOPA_STATE_WALKING);
         }
     }
+
+    CheckForEdge(coObjects);
 
     CGameObject::Update(dt, coObjects);
     CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -82,33 +107,32 @@ void CKoopa::SetState(int state)
     }
 }
 
-void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-    if (!e->obj->IsBlocking()) return;
-    if (dynamic_cast<CKoopa*>(e->obj)) return;
+void CKoopa::CheckForEdge(vector<LPGAMEOBJECT>* coObjects) {
+    float px, py;
+    GetPosition(px, py);
 
-    if (e->ny != 0) vy = 0;
-    else if (e->nx != 0)
+    float checkX = vx > 0 ? px + KOOPA_BBOX_WIDTH / 2 + 1 : px - KOOPA_BBOX_WIDTH / 2 - 1;
+    float checkY = py + KOOPA_BBOX_HEIGHT + 1;
+
+    bool foundGround = false;
+
+    for (LPGAMEOBJECT obj : *coObjects)
+    {
+        if (!obj->IsBlocking()) continue;
+
+        float l, t, r, b;
+        obj->GetBoundingBox(l, t, r, b);
+
+        if (checkX >= l && checkX <= r && checkY >= t && checkY <= b)
+        {
+            foundGround = true;
+            break;
+        }
+    }
+
+    if (!foundGround)
     {
         vx = -vx;
-        nx = -nx;
     }
 }
 
-void CKoopa::GetBoundingBox(float& l, float& t, float& r, float& b)
-{
-    if (isDefend)
-    {
-        l = x - KOOPA_BBOX_WIDTH / 2;
-        t = y - KOOPA_BBOX_HEIGHT_DEFEND / 2;
-        r = l + KOOPA_BBOX_WIDTH;
-        b = t + KOOPA_BBOX_HEIGHT_DEFEND;
-    }
-    else
-    {
-        l = x - KOOPA_BBOX_WIDTH / 2;
-        t = y - KOOPA_BBOX_HEIGHT / 2;
-        r = l + KOOPA_BBOX_WIDTH;
-        b = t + KOOPA_BBOX_HEIGHT;
-    }
-}
