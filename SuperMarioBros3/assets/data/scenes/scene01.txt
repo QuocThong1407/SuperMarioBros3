@@ -11,6 +11,7 @@ assets\data\objects\piranha_plant.txt
 assets\data\objects\bullet.txt
 assets\data\objects\paragoomba.txt
 assets\data\objects\koopa.txt
+assets\data\objects\super_leaf.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -206,7 +207,7 @@ assets\data\objects\koopa.txt
 
 6	416	96	1
 
-6	656	160	1
+6	656	161	3
 
 6	704	128	1
 

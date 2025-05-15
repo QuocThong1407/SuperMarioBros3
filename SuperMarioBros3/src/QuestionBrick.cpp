@@ -3,6 +3,7 @@
 #include "PlayScene.h"
 #include "Coin.h"
 #include "SuperMushroom.h"
+#include "SuperLeaf.h"
 
 void CQuestionBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
@@ -75,6 +76,12 @@ void CQuestionBrick::SetState(int state)
 		{
 			CSuperMushroom* mushroom = new CSuperMushroom(x, y - 32);
 			scene->AddObject(mushroom);
+			break;
+		}
+		case QUESTION_BRICK_ITEM_SUPER_LEAF:
+		{
+			CSuperLeaf* leaf = new CSuperLeaf(x, y - 12);
+			scene->AddObject(leaf);
 			break;
 		}
 		default:

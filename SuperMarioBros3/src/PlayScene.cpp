@@ -15,6 +15,7 @@
 #include "PiranhaPlant.h"
 #include "Paragoomba.h"
 #include "Koopa.h"
+#include "SuperLeaf.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -186,6 +187,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_KOOPA:
 	{
 		obj = new CKoopa(x, y);
+		break;
+	}
+
+	case OBJECT_TYPE_SUPER_LEAF:
+	{
+		obj = new CSuperLeaf(x, y);
 		break;
 	}
 

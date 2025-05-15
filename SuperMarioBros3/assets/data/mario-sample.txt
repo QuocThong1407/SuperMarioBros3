@@ -21,3 +21,4 @@ height	240
 40	assets\textures\misc3.png
 50	assets\textures\misc4.png
 60	assets\textures\enemies2.png
+70	assets\textures\misc4_reverse.png
