@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "QuestionBrick.h"
 #include "SuperMushroom.h"
+#include "PiranhaPlant.h"
 #include "Bullet.h"
 #include "Paragoomba.h"
 #include "Koopa.h"
@@ -72,6 +73,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
+	else if (dynamic_cast<CPiranhaPlant*>(e->obj))
+		OnCollisionWithPiranhaPlant(e);
 	else if (dynamic_cast<CSuperMushroom*>(e->obj))
 		OnCollisionWithSuperMushroom(e);
 	else if (dynamic_cast<CBullet*>(e->obj))
@@ -153,6 +156,25 @@ void CMario::OnCollisionWithSuperMushroom(LPCOLLISIONEVENT e) {
 	SetLevel(MARIO_LEVEL_BIG);
 
 	mushroom->Delete();
+}
+
+void CMario::OnCollisionWithPiranhaPlant(LPCOLLISIONEVENT e) {
+	CPiranhaPlant* plant = dynamic_cast<CPiranhaPlant*>(e->obj);
+
+	if (level > MARIO_LEVEL_BIG)
+	{
+		level = MARIO_LEVEL_BIG;
+		StartUntouchable();
+	}
+	else if (level > MARIO_LEVEL_SMALL)
+	{
+		level = MARIO_LEVEL_SMALL;
+		StartUntouchable();
+	}
+	else
+	{
+		SetState(MARIO_STATE_DIE);
+	}
 }
 
 void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e) {
