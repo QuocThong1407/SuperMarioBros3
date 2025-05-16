@@ -337,10 +337,17 @@ void CPlayScene::Update(DWORD dt)
 		}
 	}
 
+	CMario* mario = (CMario*)player;
+
+	bool isTransforming = mario->IsTransforming();
+
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		if (objects[i]->IsActive())
-			objects[i]->Update(dt, &coObjects);
+		if (objects[i] == player || isTransforming == false)
+		{
+			if (objects[i]->IsActive())
+				objects[i]->Update(dt, &coObjects);
+		}
 	}
 
 	player->Update(dt, &coObjects);

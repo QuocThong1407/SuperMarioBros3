@@ -108,6 +108,10 @@
 #define ID_ANI_MARIO_FLY_JUMP_RIGHT 2300
 #define ID_ANI_MARIO_FLY_JUMP_LEFT 2301
 
+#define ID_ANI_MARIO_TRANSFORMING_RIGHT 3000
+#define ID_ANI_MARIO_TRANSFORMING_LEFT 3001
+#define MARIO_TRANSFORM_TIME 700
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -140,6 +144,9 @@ class CMario : public CGameObject
 {
 	BOOLEAN isSitting;
 	BOOLEAN isFlying;
+
+	bool isTransforming;
+	ULONGLONG transform_start;
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
@@ -183,6 +190,10 @@ public:
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
+
+		isTransforming = false;
+		transform_start = 0;
+
 		coin = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -206,5 +217,7 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	bool IsOnPlatform() { return isOnPlatform; }
 
+	void StartTransform();
+	bool IsTransforming() { return isTransforming; }
 	void DropItem();
 };

@@ -33,6 +33,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable = 0;
 	}
 
+	if (isTransforming)
+	{
+		if (GetTickCount64() - transform_start > MARIO_TRANSFORM_TIME)
+			isTransforming = false;
+
+		return; 
+	}
+
 	if (dynamic_cast<CKoopa*>(item)) {
 		CKoopa* heldKoopa = dynamic_cast<CKoopa*>(item);
 
@@ -123,11 +131,13 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			{
 				if (level > MARIO_LEVEL_BIG)
 				{
+					StartTransform();
 					level = MARIO_LEVEL_BIG;
 					StartUntouchable();
 				}
 				else if (level > MARIO_LEVEL_SMALL)
 				{
+					StartTransform();
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
 				}
@@ -164,7 +174,12 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithSuperMushroom(LPCOLLISIONEVENT e) {
 	CSuperMushroom* mushroom = dynamic_cast<CSuperMushroom*>(e->obj);
-	SetLevel(MARIO_LEVEL_BIG);
+
+	if (level == MARIO_LEVEL_SMALL)
+	{
+		StartTransform();
+		SetLevel(MARIO_LEVEL_BIG);
+	}
 
 	float mushroomX, mushroomY;
 	mushroom->GetPosition(mushroomX, mushroomY);
@@ -182,11 +197,13 @@ void CMario::OnCollisionWithPiranhaPlant(LPCOLLISIONEVENT e) {
 
 	if (level > MARIO_LEVEL_BIG)
 	{
+		StartTransform();
 		level = MARIO_LEVEL_BIG;
 		StartUntouchable();
 	}
 	else if (level > MARIO_LEVEL_SMALL)
 	{
+		StartTransform();
 		level = MARIO_LEVEL_SMALL;
 		StartUntouchable();
 	}
@@ -201,11 +218,13 @@ void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e) {
 
 	if (level > MARIO_LEVEL_BIG)
 	{
+		StartTransform();
 		level = MARIO_LEVEL_BIG;
 		StartUntouchable();
 	}
 	else if (level > MARIO_LEVEL_SMALL)
 	{
+		StartTransform();
 		level = MARIO_LEVEL_SMALL;
 		StartUntouchable();
 	}
@@ -256,11 +275,13 @@ void CMario::OnCollisionWithParagoomba(LPCOLLISIONEVENT e) {
 			{
 				if (level > MARIO_LEVEL_BIG)
 				{
+					StartTransform();
 					level = MARIO_LEVEL_BIG;
 					StartUntouchable();
 				}
 				else if (level > MARIO_LEVEL_SMALL)
 				{
+					StartTransform();
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
 				}
@@ -320,11 +341,13 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 			{
 				if (level > MARIO_LEVEL_BIG)
 				{
+					StartTransform();
 					level = MARIO_LEVEL_BIG;
 					StartUntouchable();
 				}
 				else if (level > MARIO_LEVEL_SMALL)
 				{
+					StartTransform();
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
 				}
@@ -548,6 +571,8 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if (isTransforming)
+		aniId = (nx > 0) ? ID_ANI_MARIO_TRANSFORMING_RIGHT : ID_ANI_MARIO_TRANSFORMING_LEFT;
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
@@ -724,3 +749,9 @@ void CMario::SetLevel(int l)
 	level = l;
 }
 
+void CMario::StartTransform()
+{
+	isTransforming = true;
+	transform_start = GetTickCount64();
+	vx = vy = ax = ay = 0; 
+}
