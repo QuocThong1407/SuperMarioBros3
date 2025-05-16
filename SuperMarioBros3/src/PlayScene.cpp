@@ -316,10 +316,17 @@ void CPlayScene::Update(DWORD dt)
 
 	// Update camera to follow mario
 	float cx, cy;
+	float mx, my;
 	player->GetPosition(cx, cy);
+	player->GetPosition(mx, my);
 
 	CGame *game = CGame::GetInstance();
-	cx -= game->GetBackBufferWidth() / 2;
+	if (mx < 2654)
+		cx -= game->GetBackBufferWidth() / 2;
+	else
+		cx = 2654 - game->GetBackBufferWidth() / 2;
+
+
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;

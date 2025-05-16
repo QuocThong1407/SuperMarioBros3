@@ -3,6 +3,7 @@
 assets\data\objects\mario.txt
 assets\data\objects\platform.txt
 assets\data\objects\question_brick.txt
+assets\data\objects\brick.txt
 assets\data\objects\coin.txt
 assets\data\objects\goomba.txt
 assets\data\objects\tunnel.txt
@@ -198,6 +199,35 @@ assets\data\objects\point.txt
 5	2192	144	16	16	2	100530	100520	100525	0
 5	2192	160	16	16	2	100540	100520	100525	0
 5	2192	176	16	16	2	100555	100550	100550	0
+
+# BRICK
+1	-8	184
+1	-8	168
+1	-8	152
+1	-8	136
+1	-8	120
+1	-8	104
+1	-8	88
+1	-8	72
+1	-8	56
+1	-8	40
+1	-8	24
+1	-8	8
+
+1	2816	184
+1	2816	168
+1	2816	152
+1	2816	136
+1	2816	120
+1	2816	104
+1	2816	88
+1	2816	72
+1	2816	56
+1	2816	40
+1	2816	24
+1	2816	8
+
+1	628	186
 
 # QUESTION BRICK
 6	176	128	1
