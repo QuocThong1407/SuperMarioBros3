@@ -12,6 +12,7 @@
 #include "Bullet.h"
 #include "Paragoomba.h"
 #include "Koopa.h"
+#include "SuperLeaf.h"
 
 #include "Collision.h"
 
@@ -79,6 +80,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithParagoomba(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CSuperLeaf*>(e->obj))
+		OnCollisionWithSuperLeaf(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -91,7 +94,11 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		if (goomba->GetState() != GOOMBA_STATE_DIE)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
+
+			if (level == MARIO_LEVEL_RACOON)
+				vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+			else
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
 	else // hit by Goomba
@@ -100,14 +107,18 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			if (goomba->GetState() != GOOMBA_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				if (level > MARIO_LEVEL_BIG)
+				{
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
+				}
+				else if (level > MARIO_LEVEL_SMALL)
 				{
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
 				}
 				else
 				{
-					DebugOut(L">>> Mario DIE >>> \n");
 					SetState(MARIO_STATE_DIE);
 				}
 			}
@@ -147,10 +158,18 @@ void CMario::OnCollisionWithSuperMushroom(LPCOLLISIONEVENT e) {
 void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e) {
 	CBullet* bullet = dynamic_cast<CBullet*>(e->obj);
 
-	if (level == MARIO_LEVEL_BIG) {
-		SetLevel(MARIO_LEVEL_SMALL);
+	if (level > MARIO_LEVEL_BIG)
+	{
+		level = MARIO_LEVEL_BIG;
+		StartUntouchable();
 	}
-	else if (level == MARIO_LEVEL_SMALL) {
+	else if (level > MARIO_LEVEL_SMALL)
+	{
+		level = MARIO_LEVEL_SMALL;
+		StartUntouchable();
+	}
+	else
+	{
 		SetState(MARIO_STATE_DIE);
 	}
 
@@ -173,7 +192,10 @@ void CMario::OnCollisionWithParagoomba(LPCOLLISIONEVENT e) {
 				paragoomba->SetState(PARAGOOMBA_STATE_DIE);
 			}
 
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			if (level == MARIO_LEVEL_RACOON)
+				vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+			else 
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
 	else
@@ -182,14 +204,18 @@ void CMario::OnCollisionWithParagoomba(LPCOLLISIONEVENT e) {
 		{
 			if (paragoomba->GetState() != PARAGOOMBA_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				if (level > MARIO_LEVEL_BIG)
+				{
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
+				}
+				else if (level > MARIO_LEVEL_SMALL)
 				{
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
 				}
 				else
 				{
-					DebugOut(L">>> Mario DIE >>> \n");
 					SetState(MARIO_STATE_DIE);
 				}
 			}
@@ -232,7 +258,12 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 		{
 			if (untouchable == 0)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				if (level > MARIO_LEVEL_BIG)
+				{
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
+				}
+				else if (level > MARIO_LEVEL_SMALL)
 				{
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
@@ -244,6 +275,13 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 			}
 		}
 	}
+}
+
+void CMario::OnCollisionWithSuperLeaf(LPCOLLISIONEVENT e) {
+	CSuperLeaf* leaf = dynamic_cast<CSuperLeaf*>(e->obj);
+	SetLevel(MARIO_LEVEL_RACOON);
+
+	leaf->Delete();
 }
 
 void CMario::DropItem() {
@@ -382,6 +420,60 @@ int CMario::GetAniIdBig()
 	return aniId;
 }
 
+int CMario::GetAniIdRacoon()
+{
+	int aniId = -1;
+
+	if (!isOnPlatform)
+	{
+		if (isFlying)
+		{
+			aniId = (nx > 0) ? ID_ANI_MARIO_FLY_RIGHT : ID_ANI_MARIO_FLY_LEFT;
+		}
+		else if (abs(ax) == MARIO_ACCEL_RUN_X)
+		{
+			aniId = (nx > 0) ? ID_ANI_MARIO_FLY_JUMP_RIGHT : ID_ANI_MARIO_FLY_JUMP_LEFT;
+		}
+		else
+		{
+			aniId = (nx > 0) ? ID_ANI_MARIO_FLY_JUMP_RIGHT : ID_ANI_MARIO_FLY_JUMP_LEFT;
+		}
+	}
+	else {
+		if (isSitting)
+		{
+			aniId = (nx > 0) ? ID_ANI_MARIO_FLY_SIT_RIGHT : ID_ANI_MARIO_FLY_SIT_LEFT;
+		}
+		else {
+			if (vx == 0)
+			{
+				aniId = (nx > 0) ? ID_ANI_MARIO_FLY_IDLE_RIGHT : ID_ANI_MARIO_FLY_IDLE_LEFT;
+			}
+			else if (vx > 0)
+			{
+				if (ax < 0)
+					aniId = ID_ANI_MARIO_FLY_BRACE_RIGHT;
+				else if (ax == MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_MARIO_FLY_RUNNING_RIGHT;
+				else if (ax == MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_MARIO_FLY_WALKING_RIGHT;
+			}
+			else
+			{
+				if (ax > 0)
+					aniId = ID_ANI_MARIO_FLY_BRACE_LEFT;
+				else if (ax == -MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_MARIO_FLY_RUNNING_LEFT;
+				else if (ax == -MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_MARIO_FLY_WALKING_LEFT;
+			}
+		}
+	}
+	
+	if (aniId == -1) aniId = ID_ANI_MARIO_FLY_IDLE_RIGHT;
+	return aniId;
+}
+
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -393,6 +485,8 @@ void CMario::Render()
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
+	else if (level == MARIO_LEVEL_RACOON)
+		aniId = GetAniIdRacoon();
 
 	animations->Get(aniId)->Render(x, y);
 
@@ -405,6 +499,9 @@ void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
 	if (this->state == MARIO_STATE_DIE) return; 
+
+	if (level < MARIO_LEVEL_RACOON)
+		ay = MARIO_GRAVITY;
 
 	switch (state)
 	{
@@ -434,6 +531,7 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_JUMP:
 		if (isSitting) break;
+		ay = MARIO_GRAVITY;
 		if (isOnPlatform)
 		{
 			if (abs(this->vx) == MARIO_RUNNING_SPEED)
@@ -445,6 +543,26 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_RELEASE_JUMP:
 		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
+		break;
+
+	case MARIO_STATE_FLY_RIGHT:
+		isFlying = true;
+		nx = 1;
+		vx = MARIO_WALKING_SPEED;
+		vy = -MARIO_FLY_SPEED_Y;
+		break;
+
+	case MARIO_STATE_FLY_LEFT:
+		isFlying = true;
+		nx = -1;
+		vx = -MARIO_WALKING_SPEED;
+		vy = -MARIO_FLY_SPEED_Y;
+		break;
+
+	case MARIO_STATE_RELEASE_FLY:
+		isFlying = false;
+		ay = MARIO_RACOON_GRAVITY;
+		if (vy < 0) vy += MARIO_FLY_SPEED_Y / 2;
 		break;
 
 	case MARIO_STATE_SIT:
@@ -500,12 +618,28 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
-	else
+	else if (level == MARIO_LEVEL_SMALL)
 	{
 		left = x - MARIO_SMALL_BBOX_WIDTH/2;
 		top = y - MARIO_SMALL_BBOX_HEIGHT/2;
 		right = left + MARIO_SMALL_BBOX_WIDTH;
 		bottom = top + MARIO_SMALL_BBOX_HEIGHT;
+	}
+	else {
+		if (isSitting)
+		{
+			left = x - MARIO_RACOON_SITTING_BBOX_WIDTH / 2;
+			top = y - MARIO_RACOON_SITTING_BBOX_HEIGHT / 2;
+			right = left + MARIO_RACOON_SITTING_BBOX_WIDTH;
+			bottom = top + MARIO_RACOON_SITTING_BBOX_HEIGHT;
+		}
+		else
+		{
+			left = x - MARIO_RACOON_BBOX_WIDTH / 2;
+			top = y - MARIO_RACOON_BBOX_HEIGHT / 2;
+			right = left + MARIO_RACOON_BBOX_WIDTH;
+			bottom = top + MARIO_RACOON_BBOX_HEIGHT;
+		}
 	}
 }
 

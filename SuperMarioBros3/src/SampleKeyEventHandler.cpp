@@ -14,7 +14,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_DOWN:
-		mario->SetState(MARIO_STATE_SIT);
+		mario->SetState(MARIO_STATE_JUMP);
 		break;
 	case DIK_S:
 		mario->SetState(MARIO_STATE_JUMP);
@@ -42,7 +42,14 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
-		mario->SetState(MARIO_STATE_RELEASE_JUMP);
+		if (mario->GetLevel() == MARIO_LEVEL_RACOON)
+		{
+			mario->SetState(MARIO_STATE_RELEASE_FLY);
+		}
+		else
+		{
+			mario->SetState(MARIO_STATE_RELEASE_JUMP);
+		}
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
@@ -59,6 +66,8 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	{
 		if (game->IsKeyDown(DIK_A))
 			mario->SetState(MARIO_STATE_RUNNING_RIGHT);
+		else if (game->IsKeyDown(DIK_S) && mario->GetLevel() == MARIO_LEVEL_RACOON) 
+			mario->SetState(MARIO_STATE_FLY_RIGHT);
 		else
 			mario->SetState(MARIO_STATE_WALKING_RIGHT);
 	}
@@ -66,6 +75,8 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	{
 		if (game->IsKeyDown(DIK_A))
 			mario->SetState(MARIO_STATE_RUNNING_LEFT);
+		else if (game->IsKeyDown(DIK_S) && mario->GetLevel() == MARIO_LEVEL_RACOON) 
+			mario->SetState(MARIO_STATE_FLY_LEFT);
 		else
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
