@@ -24,6 +24,7 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr) override;
 	void Render() override;
 	void GetBoundingBox(float& l, float& t, float& r, float& b) override;
+	void OnCollisionWith(LPCOLLISIONEVENT e) override;
 	void OnNoCollision(DWORD dt) override;
 
 	int IsCollidable() override { return 1; }

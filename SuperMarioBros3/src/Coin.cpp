@@ -1,4 +1,6 @@
 #include "Coin.h"
+#include "Point.h"
+#include "PlayScene.h"
 
 void CCoin::Render()
 {
@@ -34,7 +36,13 @@ void CCoin::Update(DWORD dt, std::vector<LPGAMEOBJECT>* coObjects)
 
 	if (isCollected && y >= collect_y)
 	{
+		LPGAME game = CGame::GetInstance();
+		LPPLAYSCENE scene = (LPPLAYSCENE)game->GetCurrentScene();
 		isDeleted = true;
+		CPoint* point = new CPoint(x, y);
+		point->SetState(POINT_STATE_100);
+		scene->AddObject(point);
+
 		return;
 	}
 

@@ -3,6 +3,7 @@
 
 #include "Mario.h"
 #include "Game.h"
+#include "PlayScene.h"
 
 #include "Goomba.h"
 #include "Coin.h"
@@ -14,6 +15,7 @@
 #include "Paragoomba.h"
 #include "Koopa.h"
 #include "SuperLeaf.h"
+#include "Point.h"
 
 #include "Collision.h"
 
@@ -96,7 +98,16 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	{
 		if (goomba->GetState() != GOOMBA_STATE_DIE)
 		{
+			float goombaX, goombaY;
+			goomba->GetPosition(goombaX, goombaY);
+			LPGAME game = CGame::GetInstance();
+			LPPLAYSCENE scene = (LPPLAYSCENE)game->GetCurrentScene();
+			CPoint* point = new CPoint(goombaX, goombaY);
+
 			goomba->SetState(GOOMBA_STATE_DIE);
+			point->SetState(POINT_STATE_100);
+			scene->AddObject(point);
+
 
 			if (level == MARIO_LEVEL_RACOON)
 				vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
@@ -155,7 +166,15 @@ void CMario::OnCollisionWithSuperMushroom(LPCOLLISIONEVENT e) {
 	CSuperMushroom* mushroom = dynamic_cast<CSuperMushroom*>(e->obj);
 	SetLevel(MARIO_LEVEL_BIG);
 
+	float mushroomX, mushroomY;
+	mushroom->GetPosition(mushroomX, mushroomY);
+	LPGAME game = CGame::GetInstance();
+	LPPLAYSCENE scene = (LPPLAYSCENE)game->GetCurrentScene();
+	CPoint* point = new CPoint(mushroomX, mushroomY);
+
 	mushroom->Delete();
+	point->SetState(POINT_STATE_1000);
+	scene->AddObject(point);
 }
 
 void CMario::OnCollisionWithPiranhaPlant(LPCOLLISIONEVENT e) {
@@ -200,6 +219,11 @@ void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e) {
 
 void CMario::OnCollisionWithParagoomba(LPCOLLISIONEVENT e) {
 	CParagoomba* paragoomba = dynamic_cast<CParagoomba*>(e->obj);
+	float paragoombaX, paragoombaY;
+	paragoomba->GetPosition(paragoombaX, paragoombaY);
+	LPGAME game = CGame::GetInstance();
+	LPPLAYSCENE scene = (LPPLAYSCENE)game->GetCurrentScene();
+	CPoint* point = new CPoint(paragoombaX, paragoombaY);
 
 	if (e->ny < 0)
 	{
@@ -208,10 +232,14 @@ void CMario::OnCollisionWithParagoomba(LPCOLLISIONEVENT e) {
 			if (paragoomba->GetState() == PARAGOOMBA_STATE_FLYING)
 			{
 				paragoomba->SetState(PARAGOOMBA_STATE_WALKING);
+				point->SetState(POINT_STATE_200);
+				scene->AddObject(point);
 			}
 			else
 			{
 				paragoomba->SetState(PARAGOOMBA_STATE_DIE);
+				point->SetState(POINT_STATE_100);
+				scene->AddObject(point);
 			}
 
 			if (level == MARIO_LEVEL_RACOON)
@@ -247,6 +275,12 @@ void CMario::OnCollisionWithParagoomba(LPCOLLISIONEVENT e) {
 
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+	float koopaX, koopaY;
+	koopa->GetPosition(koopaX, koopaY);
+	LPGAME game = CGame::GetInstance();
+	LPPLAYSCENE scene = (LPPLAYSCENE)game->GetCurrentScene();
+	CPoint* point = new CPoint(koopaX, koopaY);
+
 	if (!koopa || koopa->IsDeleted()) return;
 
 	if (e->ny < 0)
@@ -254,6 +288,8 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 		if (!koopa->IsDefend())
 		{
 			koopa->SetState(KOOPA_STATE_DEFEND);
+			point->SetState(POINT_STATE_100);
+			scene->AddObject(point);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 		else if (koopa->IsKicked())
@@ -274,6 +310,8 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 			else
 			{
 				koopa->BeKicked(nx > 0 ? KOOPA_KICK_SPEED : -KOOPA_KICK_SPEED);
+				point->SetState(POINT_STATE_200);
+				scene->AddObject(point);
 			}
 		}
 		else if (koopa->IsKicked() || !koopa->IsDefend())
@@ -301,9 +339,16 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 
 void CMario::OnCollisionWithSuperLeaf(LPCOLLISIONEVENT e) {
 	CSuperLeaf* leaf = dynamic_cast<CSuperLeaf*>(e->obj);
+	float leafX, leafY;
+	leaf->GetPosition(leafX, leafY);
+	LPGAME game = CGame::GetInstance();
+	LPPLAYSCENE scene = (LPPLAYSCENE)game->GetCurrentScene();
+	CPoint* point = new CPoint(leafX, leafY);
 	SetLevel(MARIO_LEVEL_RACOON);
 
 	leaf->Delete();
+	point->SetState(POINT_STATE_1000);
+	scene->AddObject(point);
 }
 
 void CMario::DropItem() {

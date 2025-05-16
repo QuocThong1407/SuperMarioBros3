@@ -16,6 +16,7 @@
 #include "Paragoomba.h"
 #include "Koopa.h"
 #include "SuperLeaf.h"
+#include "Point.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -193,6 +194,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SUPER_LEAF:
 	{
 		obj = new CSuperLeaf(x, y);
+		break;
+	}
+
+	case OBJECT_TYPE_POINT:
+	{
+		obj = new CPoint(x, y);
 		break;
 	}
 

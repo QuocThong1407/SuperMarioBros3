@@ -12,6 +12,7 @@ assets\data\objects\bullet.txt
 assets\data\objects\paragoomba.txt
 assets\data\objects\koopa.txt
 assets\data\objects\super_leaf.txt
+assets\data\objects\point.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type

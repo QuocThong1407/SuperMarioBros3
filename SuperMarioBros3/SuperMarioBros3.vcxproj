@@ -147,6 +147,7 @@
     <ClInclude Include="src\PiranhaPlant.h" />
     <ClInclude Include="src\Platform.h" />
     <ClInclude Include="src\PlayScene.h" />
+    <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Portal.h" />
     <ClInclude Include="src\QuestionBrick.h" />
     <ClInclude Include="src\SampleKeyEventHandler.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="src\PiranhaPlant.cpp" />
     <ClCompile Include="src\Platform.cpp" />
     <ClCompile Include="src\PlayScene.cpp" />
+    <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Portal.cpp" />
     <ClCompile Include="src\QuestionBrick.cpp" />
     <ClCompile Include="src\SampleKeyEventHandler.cpp" />
