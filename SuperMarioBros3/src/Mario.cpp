@@ -195,42 +195,46 @@ void CMario::OnCollisionWithSuperMushroom(LPCOLLISIONEVENT e) {
 void CMario::OnCollisionWithPiranhaPlant(LPCOLLISIONEVENT e) {
 	CPiranhaPlant* plant = dynamic_cast<CPiranhaPlant*>(e->obj);
 
-	if (level > MARIO_LEVEL_BIG)
-	{
-		StartTransform();
-		level = MARIO_LEVEL_BIG;
-		StartUntouchable();
-	}
-	else if (level > MARIO_LEVEL_SMALL)
-	{
-		StartTransform();
-		level = MARIO_LEVEL_SMALL;
-		StartUntouchable();
-	}
-	else
-	{
-		SetState(MARIO_STATE_DIE);
+	if (untouchable == 0) {
+		if (level > MARIO_LEVEL_BIG)
+		{
+			StartTransform();
+			level = MARIO_LEVEL_BIG;
+			StartUntouchable();
+		}
+		else if (level > MARIO_LEVEL_SMALL)
+		{
+			StartTransform();
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			SetState(MARIO_STATE_DIE);
+		}
 	}
 }
 
 void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e) {
 	CBullet* bullet = dynamic_cast<CBullet*>(e->obj);
 
-	if (level > MARIO_LEVEL_BIG)
-	{
-		StartTransform();
-		level = MARIO_LEVEL_BIG;
-		StartUntouchable();
-	}
-	else if (level > MARIO_LEVEL_SMALL)
-	{
-		StartTransform();
-		level = MARIO_LEVEL_SMALL;
-		StartUntouchable();
-	}
-	else
-	{
-		SetState(MARIO_STATE_DIE);
+	if (untouchable == 0) {
+		if (level > MARIO_LEVEL_BIG)
+		{
+			StartTransform();
+			level = MARIO_LEVEL_BIG;
+			StartUntouchable();
+		}
+		else if (level > MARIO_LEVEL_SMALL)
+		{
+			StartTransform();
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			SetState(MARIO_STATE_DIE);
+		}
 	}
 
 	bullet->Delete();
