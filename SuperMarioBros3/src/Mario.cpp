@@ -647,7 +647,10 @@ void CMario::SetState(int state)
 		{
 			isSitting = false;
 			state = MARIO_STATE_IDLE;
-			y -= MARIO_SIT_HEIGHT_ADJUST;
+			if (level == MARIO_LEVEL_RACOON)
+				y -= MARIO_RACOON_SIT_HEIGHT_ADJUST;
+			else
+				y -= MARIO_SIT_HEIGHT_ADJUST;
 		}
 		break;
 
@@ -717,6 +720,7 @@ void CMario::SetLevel(int l)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
+
 	level = l;
 }
 

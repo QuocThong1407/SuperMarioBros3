@@ -245,10 +245,10 @@ assets\data\objects\point.txt
 6	1472	144	1
 
 # PIRANHA PLANT
-9	352	154
+9	356	154
 
 # TUNNEL
-7	352	160	2
+7	356	160	2
 
 7	1792	176	1
 
@@ -265,12 +265,13 @@ assets\data\objects\point.txt
 7	2320	176	1
 
 # GOOMBA
+2	288	176
 2	576	176
-2	860	160
 2	760	160
+2	960	160
 
 # PARAGOOMBA
-10	1056	160
+10	818	160
 
 # KOOPA
 11	560	134

@@ -297,41 +297,53 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way 
+	if (player == nullptr) return;
+
+	float mx, my;
+	player->GetPosition(mx, my);
+
+	CGame* game = CGame::GetInstance();
+	int screenW = game->GetBackBufferWidth();
+	int screenH = game->GetBackBufferHeight();
+
+	float cx = (mx < 2654) ? mx - screenW / 2 : 2654 - screenW / 2;
+	if (cx < 0) cx = 0;
+	float cy = 0; 
+
+	game->SetCamPos(cx, cy);
 
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+	for (size_t i = 0; i < objects.size(); i++)
 	{
-		coObjects.push_back(objects[i]);
+		LPGAMEOBJECT obj = objects[i];
+
+		if (obj == player) continue;
+
+		float ox, oy;
+		obj->GetPosition(ox, oy);
+
+		bool alwaysActive =
+			dynamic_cast<CPlatform*>(obj) != nullptr ||
+			dynamic_cast<CTunnel*>(obj) != nullptr;
+
+		if (ox >= cx - 32 && ox <= cx + screenW + 32 || alwaysActive)
+		{
+			obj->SetActive(true);
+			coObjects.push_back(obj);
+		}
+		else
+		{
+			obj->SetActive(false);
+		}
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+		if (objects[i]->IsActive())
+			objects[i]->Update(dt, &coObjects);
 	}
 
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return; 
-
-	// Update camera to follow mario
-	float cx, cy;
-	float mx, my;
-	player->GetPosition(cx, cy);
-	player->GetPosition(mx, my);
-
-	CGame *game = CGame::GetInstance();
-	if (mx < 2654)
-		cx -= game->GetBackBufferWidth() / 2;
-	else
-		cx = 2654 - game->GetBackBufferWidth() / 2;
-
-
-	cy -= game->GetBackBufferHeight() / 2;
-
-	if (cx < 0) cx = 0;
-
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	player->Update(dt, &coObjects);
 
 	PurgeDeletedObjects();
 }

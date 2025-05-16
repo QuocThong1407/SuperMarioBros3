@@ -28,6 +28,7 @@ protected:
 
 	int state;
 
+	bool isActivated;
 	bool isDeleted; 
 
 public: 
@@ -69,6 +70,9 @@ public:
 	virtual int IsDirectionColliable(float nx, float ny) { return 1; }
 
 	~CGameObject();
+
+	bool IsActive() { return isActivated; }
+	void SetActive(bool active) { isActivated = active; }
 
 	static bool IsDeleted(const LPGAMEOBJECT &o) { return o->isDeleted; }
 };
