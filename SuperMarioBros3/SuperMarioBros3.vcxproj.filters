@@ -114,6 +114,12 @@
     <ClInclude Include="src\CloudBlock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\WoodBlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\YellowBrick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp">
@@ -201,6 +207,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CloudBlock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WoodBlock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\YellowBrick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

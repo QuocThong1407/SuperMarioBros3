@@ -18,6 +18,8 @@
 #include "SuperLeaf.h"
 #include "Point.h"
 #include "CloudBlock.h"
+#include "WoodBlock.h"
+#include "YellowBrick.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -207,6 +209,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_CLOUD_BLOCK:
 	{
 		obj = new CCloudBlock(x, y);
+		break;
+	}
+
+	case OBJECT_TYPE_WOOD_BLOCK:
+	{
+		obj = new CWoodBlock(x, y);
+		break;
+	}
+
+	case OBJECT_TYPE_YELLOW_BRICK:
+	{
+		obj = new CYellowBrick(x, y);
 		break;
 	}
 

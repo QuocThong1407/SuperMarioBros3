@@ -161,6 +161,8 @@
     <ClInclude Include="src\Textures.h" />
     <ClInclude Include="src\Tunnel.h" />
     <ClInclude Include="src\Utils.h" />
+    <ClInclude Include="src\WoodBlock.h" />
+    <ClInclude Include="src\YellowBrick.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
@@ -192,6 +194,8 @@
     <ClCompile Include="src\Textures.cpp" />
     <ClCompile Include="src\Tunnel.cpp" />
     <ClCompile Include="src\Utils.cpp" />
+    <ClCompile Include="src\WoodBlock.cpp" />
+    <ClCompile Include="src\YellowBrick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

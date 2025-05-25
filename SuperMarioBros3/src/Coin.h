@@ -8,8 +8,8 @@
 #define ID_ANI_STATIC_COIN 11001
 
 #define	COIN_WIDTH 10
-#define COIN_BBOX_WIDTH 8
-#define COIN_BBOX_HEIGHT 8
+#define COIN_BBOX_WIDTH 14
+#define COIN_BBOX_HEIGHT 16
 
 #define COIN_GRAVITY 0.003f
 #define COIN_JUMP_SPEED_Y 0.6f
@@ -32,6 +32,7 @@ public:
 	void Update(DWORD dt, std::vector<LPGAMEOBJECT>* coObjects);
 	void OnNoCollision(DWORD dt) override;
 	void SetState(int state);
+	int IsBlocking() override { return 0; }
 
 	bool IsCollected() { return isCollected; }
 };

@@ -8,8 +8,8 @@ void CCloudBlock::Render()
 
 void CCloudBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x - BRICK_BBOX_WIDTH / 2;
-	t = y - BRICK_BBOX_HEIGHT / 2;
-	r = l + BRICK_BBOX_WIDTH;
-	b = t + BRICK_BBOX_HEIGHT;
+	l = x - CLOUD_BLOCK_BBOX_WIDTH / 2;
+	t = y - CLOUD_BLOCK_BBOX_HEIGHT / 2;
+	r = l + CLOUD_BLOCK_BBOX_WIDTH;
+	b = t + CLOUD_BLOCK_BBOX_HEIGHT;
 }

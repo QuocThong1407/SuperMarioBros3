@@ -15,6 +15,9 @@ assets\data\objects\koopa.txt
 assets\data\objects\super_leaf.txt
 assets\data\objects\point.txt
 assets\data\objects\cloud_block.txt
+assets\data\objects\wood_block.txt
+assets\data\objects\yellow_brick.txt
+
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -347,6 +350,54 @@ assets\data\objects\cloud_block.txt
 
 6	1448	-88	1
 
+# WOOD BLOCK
+15	1504	112
+15	1520	112
+
+15	1568	176
+15	1584	176
+15	1600	176
+15	1584	160
+15	1600	160
+15	1600	144
+
+15	1664	176
+15	1680	176
+15	1696	176
+15	1664	160
+15	1680	160
+15	1664	144
+
+15	2256	144
+15	2272	144
+
+15	2256	80
+15	2272	80
+
+# YELLOW BRICK
+16	1952	176
+16	1968	176
+16	1984	176
+16	2000	176
+16	2016	176
+16	2032	176
+16	2048	176
+
+16	1968	160
+16	1984	160
+16	2000	160
+16	2016	160
+16	2032	160
+
+16	1984	144
+16	2000	144
+16	2016	144
+16	2032	144
+
+16	2096	176
+16	2112	176
+16	2096	160
+
 # PIRANHA PLANT
 9	356	154
 
@@ -355,15 +406,16 @@ assets\data\objects\cloud_block.txt
 
 7	1792	176	1
 
-7	1856	160	2
+7	1856	176	2
 
-7	2264	176	3
+7	2264	168	3
 
-7	2264	64	3
-
-7	2264	33	3
-
-7	2264	2	3
+7	2264	56	3
+7	2264	24	3
+7	2264	-8	3
+7	2264	-40	3
+7	2264	-72	3
+7	2264	-104	1
 
 7	2320	176	1
 

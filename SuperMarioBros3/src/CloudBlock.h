@@ -3,9 +3,9 @@
 #include "GameObject.h"
 
 #define ID_ANI_CLOUD_BLOCK 20000
-#define BRICK_WIDTH 16
-#define BRICK_BBOX_WIDTH 16
-#define BRICK_BBOX_HEIGHT 16
+
+#define CLOUD_BLOCK_BBOX_WIDTH 16
+#define CLOUD_BLOCK_BBOX_HEIGHT 16
 
 class CCloudBlock : public CGameObject {
 public:

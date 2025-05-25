@@ -7,7 +7,7 @@
 60002	2	27	34	75	30
 
 # BODY TUNNEL
-60003	3	44	33	75	30
+60003	3	43	33	74	80
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
