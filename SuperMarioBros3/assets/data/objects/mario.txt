@@ -230,7 +230,8 @@
 # JUMP LEFT
 2301	14712	100	14713	100	14714	100
 
-################### CHANGING #################
+################### TRANSFORM #################
+# SMALL MARIO AND BIG MARIO
 # RIGHT IDLE
 3000	11121	100	12121	100
 # LEFT IDLE

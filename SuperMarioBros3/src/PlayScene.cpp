@@ -17,6 +17,7 @@
 #include "Koopa.h"
 #include "SuperLeaf.h"
 #include "Point.h"
+#include "CloudBlock.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -203,6 +204,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
+	case OBJECT_TYPE_CLOUD_BLOCK:
+	{
+		obj = new CCloudBlock(x, y);
+		break;
+	}
+
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = (float)atof(tokens[3].c_str());
@@ -303,12 +310,26 @@ void CPlayScene::Update(DWORD dt)
 	player->GetPosition(mx, my);
 
 	CGame* game = CGame::GetInstance();
+	CMario* mario = (CMario*)player;
+
 	int screenW = game->GetBackBufferWidth();
 	int screenH = game->GetBackBufferHeight();
 
 	float cx = (mx < 2654) ? mx - screenW / 2 : 2654 - screenW / 2;
+
 	if (cx < 0) cx = 0;
-	float cy = 0; 
+
+	float cy;
+
+	if (mario->GetLevel() == MARIO_LEVEL_RACOON) {
+		if (my > 94)
+			cy = 0;
+		else
+			cy = (my >= -113) ? my - screenH / 2 + 10:  -113 - screenH / 2 + 10;
+	}
+	else
+		cy = 0;
+
 
 	game->SetCamPos(cx, cy);
 
@@ -336,8 +357,6 @@ void CPlayScene::Update(DWORD dt)
 			obj->SetActive(false);
 		}
 	}
-
-	CMario* mario = (CMario*)player;
 
 	bool isTransforming = mario->IsTransforming();
 

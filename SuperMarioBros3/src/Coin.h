@@ -5,6 +5,7 @@
 #include "Animations.h"
 
 #define ID_ANI_COIN 11000
+#define ID_ANI_STATIC_COIN 11001
 
 #define	COIN_WIDTH 10
 #define COIN_BBOX_WIDTH 8
@@ -22,7 +23,9 @@ class CCoin : public CGameObject {
 	float ay = COIN_GRAVITY;
 	float collect_y = 0;
 public:
-	CCoin(float x, float y) : CGameObject(x, y) {}
+	CCoin(float x, float y) : CGameObject(x, y) {
+		SetState(COIN_STATE_IDLE);
+	}
 
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	void Render();

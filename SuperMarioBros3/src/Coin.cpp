@@ -6,8 +6,16 @@ void CCoin::Render()
 {
 	if (isDeleted) return;
 
+	int aniId = -1;
+
+	if (state == COIN_STATE_JUMP)
+		aniId = ID_ANI_COIN;
+
+	if (aniId == -1)
+		aniId = ID_ANI_STATIC_COIN;
+
 	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(ID_ANI_COIN)->Render(x, y);
+	animations->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
 }
@@ -54,10 +62,13 @@ void CCoin::Update(DWORD dt, std::vector<LPGAMEOBJECT>* coObjects)
 
 void CCoin::SetState(int state)
 {
+	this->state = state;
+
 	switch (state)
 	{
 	case COIN_STATE_IDLE:
 		vx = vy = 0;
+		ay = 0;
 		break;
 	case COIN_STATE_JUMP:
 		vy = -COIN_JUMP_SPEED_Y;

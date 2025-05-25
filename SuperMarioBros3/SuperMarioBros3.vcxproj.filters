@@ -111,6 +111,9 @@
     <ClInclude Include="src\Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\CloudBlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp">
@@ -195,6 +198,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Point.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CloudBlock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
