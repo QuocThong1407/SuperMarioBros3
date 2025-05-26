@@ -23,3 +23,8 @@ height	240
 60	assets\textures\enemies2.png
 70	assets\textures\misc4_reverse.png
 80	assets\textures\misc2_bg.png
+90	assets\textures\misc5.png
+100	assets\textures\mario2.png
+110	assets\textures\enemies3.png
+120	assets\textures\dialogs.png
+130	assets\textures\HUD.png
