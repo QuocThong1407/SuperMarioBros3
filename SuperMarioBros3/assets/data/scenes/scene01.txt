@@ -399,7 +399,9 @@ assets\data\objects\yellow_brick.txt
 16	2096	160
 
 # PIRANHA PLANT
-9	356	154
+9	356	154	1
+9	1792	184	3
+9	1856	170	2
 
 # TUNNEL
 7	356	160	2

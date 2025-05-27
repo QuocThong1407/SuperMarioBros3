@@ -18,14 +18,16 @@ protected:
 	float ax, ay;
 	float targetX, targetY;
 
-	void CalculateVelocity(float targetX, float targetY);
-
 public:
-	CBullet(float x, float y, float targetX, float targetY);
+	CBullet(float x, float y);
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr) override;
 	void Render() override;
 	void OnNoCollision(DWORD dt) override;
 	void GetBoundingBox(float& l, float& t, float& r, float& b) override;
 	void SetState(int state) override;
+
+	int IsBlocking() override { return 0; }
+
+	void SetDirection(float angleRad);
 };

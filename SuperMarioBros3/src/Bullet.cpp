@@ -3,32 +3,15 @@
 #include "PlayScene.h"
 #include "Mario.h"
 
-CBullet::CBullet(float x, float y, float targetX, float targetY)
-	: CGameObject(x, y)
+CBullet::CBullet(float x, float y) : CGameObject(x, y)
 {
-	this->targetX = targetX;
-	this->targetY = targetY;
-
-	ax = 0;
-	ay = BULLET_GRAVITY;
-
 	SetState(BULLET_STATE_SHOOTING);
 }
 
-void CBullet::CalculateVelocity(float targetX, float targetY)
+void CBullet::SetDirection(float angleRad)
 {
-	float dx = targetX - x;
-	float dy = targetY - y;
-
-	if (dx == 0) dx = 0.0001f;
-
-	float angle = atan(fabs(dy) / fabs(dx));
-
-	vx = BULLET_SPEED * cos(angle);
-	vy = BULLET_SPEED * sin(angle);
-
-	if (dx < 0) vx = -vx;
-	if (dy < 0) vy = -vy;
+	vx = BULLET_SPEED * cos(angleRad);
+	vy = -BULLET_SPEED * sin(angleRad); 
 }
 
 void CBullet::OnNoCollision(DWORD dt)
@@ -70,7 +53,8 @@ void CBullet::SetState(int state)
 	switch (state)
 	{
 	case BULLET_STATE_SHOOTING:
-		CalculateVelocity(targetX, targetY);
+		ax = 0;
+		ay = BULLET_GRAVITY;
 		break;
 	}
 }

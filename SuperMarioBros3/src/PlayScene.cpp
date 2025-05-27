@@ -178,7 +178,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_PIRANHA_PLANT:
 	{
-		obj = new CPiranhaPlant(x, y);
+		int piranha_type = 1;
+		if (tokens.size() > 3)
+			piranha_type = atoi(tokens[3].c_str());
+
+		obj = new CPiranhaPlant(x, y, piranha_type);
 		break;
 	}
 

@@ -27,14 +27,35 @@ void CPiranhaPlant::Render()
 	bool isMarioOnTop = my < y;
 	bool isMarioOnLeft = mx < x;
 
-	if (isMarioOnLeft && isMarioOnTop)
-		aniId = ID_ANI_PIRANHA_PLANT_LEFT_UP;
-	else if (isMarioOnLeft && !isMarioOnTop)
-		aniId = ID_ANI_PIRANHA_PLANT_LEFT_DOWN;
-	else if (!isMarioOnLeft && isMarioOnTop)
-		aniId = ID_ANI_PIRANHA_PLANT_RIGHT_UP;
-	else if (!isMarioOnLeft && !isMarioOnTop)
-		aniId = ID_ANI_PIRANHA_PLANT_RIGHT_DOWN;
+	if (type == 3) {
+		aniId = ID_ANI_GREEN_HANGING_PIRANHA_PLANT;
+	}
+	else if (isMarioOnLeft && isMarioOnTop) {
+		if (type == 1) 
+			aniId = ID_ANI_RED_PIRANHA_PLANT_LEFT_UP;
+		else if (type == 2) 
+			aniId = ID_ANI_GREEN_PIRANHA_PLANT_LEFT_UP;
+
+	}
+	else if (isMarioOnLeft && !isMarioOnTop) {
+		if (type == 1)
+			aniId = ID_ANI_RED_PIRANHA_PLANT_LEFT_DOWN;
+		else if (type == 2)
+			aniId = ID_ANI_GREEN_PIRANHA_PLANT_LEFT_DOWN;
+	}
+	else if (!isMarioOnLeft && isMarioOnTop) {
+		if (type == 1) 
+			aniId = ID_ANI_RED_PIRANHA_PLANT_RIGHT_UP;
+		else if (type == 2)
+			aniId = ID_ANI_GREEN_PIRANHA_PLANT_RIGHT_UP;
+	}
+	else if (!isMarioOnLeft && !isMarioOnTop) {
+		if (type == 1)
+			aniId = ID_ANI_RED_PIRANHA_PLANT_RIGHT_DOWN;
+		else if (type == 2)
+			aniId = ID_ANI_GREEN_PIRANHA_PLANT_RIGHT_DOWN;
+	}
+		
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 }
@@ -72,10 +93,12 @@ void CPiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y = minY;
 			vy = 0;
 
-			if (!hasShot && GetTickCount64() - timeShootStart >= PIRANHA_PLANT_RELOAD_TIME)
-			{
-				Shoot();
-				hasShot = true;
+			if (type == 1 || type == 2) {
+				if (!hasShot && GetTickCount64() - timeShootStart >= PIRANHA_PLANT_RELOAD_TIME)
+				{
+					Shoot();
+					hasShot = true;
+				}
 			}
 
 			if (GetTickCount64() - timeUpStart >= PIRANHA_PLANT_TIME_UP)
@@ -104,6 +127,22 @@ void CPiranhaPlant::Shoot() {
 	float mx, my;
 	mario->GetPosition(mx, my);
 
-	CBullet* bullet = new CBullet(x, y, mx, my - 8);
+	bool isMarioOnTop = my < y;
+	bool isMarioOnLeft = mx < x;
+
+	float angleRad = 0;
+
+	if (isMarioOnLeft && isMarioOnTop)
+		angleRad = D3DXToRadian(135); 
+	else if (isMarioOnLeft && !isMarioOnTop)
+		angleRad = D3DXToRadian(195); 
+	else if (!isMarioOnLeft && isMarioOnTop)
+		angleRad = D3DXToRadian(45); 
+	else if (!isMarioOnLeft && !isMarioOnTop)
+		angleRad = D3DXToRadian(345); 
+
+	CBullet* bullet = new CBullet(x, y - 4);
+	bullet->SetDirection(angleRad);
+
 	scene->AddObject(bullet);
 }
