@@ -35,7 +35,15 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     vy += ay * dt;
     vx += ax * dt;
 
-    if (isDefend && !isComeback)
+    if (koopaType == 3) {
+        if (GetTickCount64() - flyStart >= KOOPA_FLYING_TIME && isOnPlatform) {
+            vy = KOOPA_FLYING_SPEED_Y;
+            isOnPlatform = false;
+            flyStart = GetTickCount64();
+        }
+    }
+
+    if (isDefend && !isComeback && !isKicked)
     {
         if (GetTickCount64() - defend_start > KOOPA_DEFEND_TIMEOUT) {
             SetState(KOOPA_STATE_COMEBACK);
@@ -50,7 +58,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         }
     }
 
-    if (!isDefend) 
+    if (!isDefend && koopaType == 1) 
         CheckForEdge(coObjects);
 
     CGameObject::Update(dt, coObjects);
@@ -59,15 +67,54 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CKoopa::Render()
 {
-    int aniId = ID_ANI_KOOPA_WALKING_LEFT;
+    int aniId = -1;
 
-    if (isDefend) {
-        aniId = isComeback ? ID_ANI_KOOPA_COMEBACK : (isKicked ? ID_ANI_KOOPA_KICKED : ID_ANI_KOOPA_DEFEND);
+    if (state == KOOPA_STATE_WALKING) {
+        if (vx > 0) {
+            if (koopaType == 1) 
+                aniId = ID_ANI_RED_KOOPA_WALKING_RIGHT;
+            else if (koopaType == 2) 
+                aniId = ID_ANI_GREEN_KOOPA_WALKING_RIGHT;
+        }
+        else {
+            if (koopaType == 1)
+                aniId = ID_ANI_RED_KOOPA_WALKING_LEFT;
+            else if (koopaType == 2)
+                aniId = ID_ANI_GREEN_KOOPA_WALKING_LEFT;
+        }
     }
-    else if (vx > 0)
-        aniId = ID_ANI_KOOPA_WALKING_RIGHT;
-    else
-        aniId = ID_ANI_KOOPA_WALKING_LEFT;
+    else if (state == KOOPA_STATE_FLYING) {
+        if (vx > 0) {
+            aniId = ID_ANI_FLYING_GREEN_KOOPA_WALKING_RIGHT;
+        }
+        else {
+            aniId = ID_ANI_FLYING_GREEN_KOOPA_WALKING_LEFT;
+        }
+    }
+    else if (state == KOOPA_STATE_DEFEND) {
+        if (koopaType == 1)
+            aniId = ID_ANI_RED_KOOPA_DEFEND;
+        else if (koopaType == 2)
+            aniId = ID_ANI_GREEN_KOOPA_DEFEND;
+    }
+    else if (state == KOOPA_STATE_COMEBACK) {
+        if (koopaType == 1)
+            aniId = ID_ANI_RED_KOOPA_COMEBACK;
+        else if (koopaType == 2)
+            aniId = ID_ANI_GREEN_KOOPA_COMEBACK;
+    }
+    else if (state == KOOPA_STATE_KICKED) {
+        if (koopaType == 1)
+            aniId = ID_ANI_RED_KOOPA_KICKED;
+        else if (koopaType == 2)
+            aniId = ID_ANI_GREEN_KOOPA_KICKED;
+    }
+    else if (state == KOOPA_STATE_HELD) {
+        if (koopaType == 1)
+            aniId = ID_ANI_RED_KOOPA_DEFEND;
+        else if (koopaType == 2)
+            aniId = ID_ANI_GREEN_KOOPA_DEFEND;
+    }
 
     CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 }
@@ -80,6 +127,7 @@ void CKoopa::SetState(int state)
     {
     case KOOPA_STATE_WALKING:
         vx = -KOOPA_WALKING_SPEED;
+        ay = KOOPA_GRAVITY;
         isDefend = false;
         isComeback = false;
         isKicked = false;
@@ -115,7 +163,14 @@ void CKoopa::SetState(int state)
         vy = 0;
         isHeld = true;
         break;
+
+    case KOOPA_STATE_FLYING:
+        vx = -KOOPA_FLYING_SPEED_X;
+        ay = FLYING_KOOPA_GRAVITY;
+        flyStart = GetTickCount64();
+        break;
     }
+
 }
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -128,7 +183,10 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
     if (!e->obj->IsBlocking()) return;
     if (dynamic_cast<CKoopa*>(e->obj)) return;
 
-    if (e->ny != 0) vy = 0;
+    if (e->ny != 0) {
+        vy = 0;
+        isOnPlatform = true;
+    }
     else if (e->nx != 0)
     {
         vx = -vx;

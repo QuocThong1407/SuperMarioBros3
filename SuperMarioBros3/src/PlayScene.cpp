@@ -194,7 +194,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_KOOPA:
 	{
-		obj = new CKoopa(x, y);
+		int koopaType = 1;
+
+		if (tokens.size() > 3)
+			koopaType = atoi(tokens[3].c_str());
+
+		obj = new CKoopa(x, y, koopaType);
 		break;
 	}
 
