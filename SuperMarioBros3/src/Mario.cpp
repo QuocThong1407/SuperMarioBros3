@@ -17,6 +17,7 @@
 #include "SuperLeaf.h"
 #include "Point.h"
 #include "YellowBrick.h"
+#include "SwitchBlock.h"
 
 #include "Collision.h"
 
@@ -98,6 +99,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithSuperLeaf(e);
 	else if (dynamic_cast<CYellowBrick*>(e->obj))
 		OnCollisionWithYellowBrick(e);
+	else if (dynamic_cast<CSwitchBlock*>(e->obj))
+		OnCollisionWithSwitchBlock(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -384,6 +387,41 @@ void CMario::OnCollisionWithYellowBrick(LPCOLLISIONEVENT e) {
 	CYellowBrick* brick = dynamic_cast<CYellowBrick*>(e->obj);
 	if (e->ny > 0)
 		brick->Break();
+}
+
+void CMario::OnCollisionWithSwitchBlock(LPCOLLISIONEVENT e) {
+	CSwitchBlock* sw = dynamic_cast<CSwitchBlock*>(e->obj);
+	if (!sw || sw->isActivated) return;
+
+	if (e->ny < 0)
+	{
+		sw->isActivated = true;
+		sw->SetState(SWITCH_BLOCK_STATE_DISABLED);
+
+		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+		vector<LPGAMEOBJECT>* objects = scene->GetObjects();
+
+		float sx, sy;
+		sw->GetPosition(sx, sy);
+
+		for (LPGAMEOBJECT obj : *objects)
+		{
+			CYellowBrick* brick = dynamic_cast<CYellowBrick*>(obj);
+			if (!brick || brick->IsDeleted()) continue;
+
+			float bx, by;
+			brick->GetPosition(bx, by);
+
+			if (abs(bx - sx) <= 100 && abs(by - sy) <= 100)
+			{
+				CCoin* coin = new CCoin(bx, by);
+				coin->SetState(COIN_STATE_IDLE);
+				scene->AddObject(coin);
+
+				brick->Break();
+			}
+		}
+	}
 }
 
 void CMario::OnCollisionWithSuperLeaf(LPCOLLISIONEVENT e) {

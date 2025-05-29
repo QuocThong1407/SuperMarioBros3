@@ -18,6 +18,7 @@ assets\data\objects\cloud_block.txt
 assets\data\objects\wood_block.txt
 assets\data\objects\yellow_brick.txt
 assets\data\objects\broken_brick.txt
+assets\data\objects\switch_block.txt
 
 #
 [OBJECTS]
@@ -376,28 +377,28 @@ assets\data\objects\broken_brick.txt
 15	2272	80
 
 # YELLOW BRICK
-16	1952	176
-16	1968	176
-16	1984	176
-16	2000	176
-16	2016	176
-16	2032	176
-16	2048	176
+16	1952	176	1
+16	1968	176	1
+16	1984	176	1
+16	2000	176	1
+16	2016	176	1
+16	2032	176	1
+16	2048	176	1
 
-16	1968	160
-16	1984	160
-16	2000	160
-16	2016	160
-16	2032	160
+16	1968	160	1
+16	1984	160	1
+16	2000	160	1
+16	2016	160	1
+16	2032	160	1
 
-16	1984	144
-16	2000	144
-16	2016	144
-16	2032	144
+16	1984	144	1
+16	2000	144	1
+16	2016	144	1
+16	2032	144	2
 
-16	2096	176
-16	2112	176
-16	2096	160
+16	2096	176	1
+16	2112	176	1
+16	2096	160	1
 
 # PIRANHA PLANT
 9	356	154	1

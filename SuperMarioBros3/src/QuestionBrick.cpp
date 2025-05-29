@@ -93,6 +93,7 @@ void CQuestionBrick::SetState(int state)
 	{
 		vy = 0;
 		y = originalY;
+		isUnboxed = true;
 		break;
 	}
 	}

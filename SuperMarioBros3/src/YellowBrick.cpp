@@ -1,5 +1,7 @@
 #include "YellowBrick.h"
 #include "BrokenBrick.h"
+#include "QuestionBrick.h"
+#include "SwitchBlock.h"
 #include "PlayScene.h"
 
 void CYellowBrick::Render()
@@ -28,5 +30,14 @@ void CYellowBrick::Break()
     for (int i = 0; i < 4; i++) {
         CBrokenBrick* piece = new CBrokenBrick(x, y, pieceVX[i], pieceVY[i]);
         scene->AddObject(piece);
+    }
+
+    if (type == 2) {
+        CQuestionBrick* qb = new CQuestionBrick(x, y);
+        qb->SetState(QUESTION_BRICK_STATE_DISABLED);
+        scene->AddObject(qb);
+
+        CSwitchBlock* PSwitch = new CSwitchBlock(x, y);
+        scene->AddObject(PSwitch);
     }
 }

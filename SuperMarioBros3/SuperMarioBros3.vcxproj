@@ -158,6 +158,7 @@
     <ClInclude Include="src\Sprites.h" />
     <ClInclude Include="src\SuperLeaf.h" />
     <ClInclude Include="src\SuperMushroom.h" />
+    <ClInclude Include="src\SwitchBlock.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Textures.h" />
     <ClInclude Include="src\Tunnel.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="src\Sprites.cpp" />
     <ClCompile Include="src\SuperLeaf.cpp" />
     <ClCompile Include="src\SuperMushroom.cpp" />
+    <ClCompile Include="src\SwitchBlock.cpp" />
     <ClCompile Include="src\Textures.cpp" />
     <ClCompile Include="src\Tunnel.cpp" />
     <ClCompile Include="src\Utils.cpp" />

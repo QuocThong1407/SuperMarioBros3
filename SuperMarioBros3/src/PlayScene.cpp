@@ -21,6 +21,7 @@
 #include "WoodBlock.h"
 #include "YellowBrick.h"
 #include "BrokenBrick.h"
+#include "SwitchBlock.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -230,13 +231,24 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_YELLOW_BRICK:
 	{
-		obj = new CYellowBrick(x, y);
+		int type = 1;
+
+		if (tokens.size() > 3)
+			type = atoi(tokens[3].c_str());
+
+		obj = new CYellowBrick(x, y, type);
 		break;
 	}
 
 	case OBJECT_TYPE_BROKEN_BRICK:
 	{
 		obj = new CBrokenBrick(x, y, 0, 0);
+		break;
+	}
+
+	case OBJECT_TYPE_SWITCH_BLOCK:
+	{
+		obj = new CSwitchBlock(x, y);
 		break;
 	}
 

@@ -8,10 +8,14 @@
 #define YELLOW_BRICK_BBOX_HEIGHT 16
 
 class CYellowBrick : public CGameObject {
+	int type;
 public:
-	CYellowBrick(float x, float y) : CGameObject(x, y) {}
+	CYellowBrick(float x, float y, int type) : CGameObject(x, y) {
+		this->type = type;
+	}
+
 	void Render();
-	void Update(DWORD dt) {}
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) override {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 
 	void Break();
