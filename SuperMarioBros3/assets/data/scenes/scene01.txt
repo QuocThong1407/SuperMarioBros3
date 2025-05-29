@@ -17,6 +17,7 @@ assets\data\objects\point.txt
 assets\data\objects\cloud_block.txt
 assets\data\objects\wood_block.txt
 assets\data\objects\yellow_brick.txt
+assets\data\objects\broken_brick.txt
 
 #
 [OBJECTS]
@@ -436,6 +437,7 @@ assets\data\objects\yellow_brick.txt
 11	1384	70	3
 11	1428	70	3
 11	1480	150	2
+11	2096	134	1
 
 # MAIN GROUND
 5	0	192	16	16	39	100000	100005	100010	1

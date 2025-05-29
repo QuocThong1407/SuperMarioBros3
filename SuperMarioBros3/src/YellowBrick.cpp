@@ -1,4 +1,6 @@
 #include "YellowBrick.h"
+#include "BrokenBrick.h"
+#include "PlayScene.h"
 
 void CYellowBrick::Render()
 {
@@ -12,4 +14,19 @@ void CYellowBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 	t = y - YELLOW_BRICK_BBOX_HEIGHT / 2;
 	r = l + YELLOW_BRICK_BBOX_WIDTH;
 	b = t + YELLOW_BRICK_BBOX_HEIGHT;
+}
+
+void CYellowBrick::Break()
+{
+    this->isDeleted = true;
+
+    LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+
+    float pieceVX[] = { -BROKEN_BRICK_SPEED_X, BROKEN_BRICK_SPEED_X, -BROKEN_BRICK_SPEED_X, BROKEN_BRICK_SPEED_X };
+    float pieceVY[] = { -BROKEN_BRICK_SPEED_Y, -BROKEN_BRICK_SPEED_Y, -BROKEN_BRICK_SPEED_Y / 2, -BROKEN_BRICK_SPEED_Y / 2 };
+
+    for (int i = 0; i < 4; i++) {
+        CBrokenBrick* piece = new CBrokenBrick(x, y, pieceVX[i], pieceVY[i]);
+        scene->AddObject(piece);
+    }
 }

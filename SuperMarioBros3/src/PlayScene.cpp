@@ -20,6 +20,7 @@
 #include "CloudBlock.h"
 #include "WoodBlock.h"
 #include "YellowBrick.h"
+#include "BrokenBrick.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -230,6 +231,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_YELLOW_BRICK:
 	{
 		obj = new CYellowBrick(x, y);
+		break;
+	}
+
+	case OBJECT_TYPE_BROKEN_BRICK:
+	{
+		obj = new CBrokenBrick(x, y, 0, 0);
 		break;
 	}
 

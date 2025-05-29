@@ -16,6 +16,7 @@
 #include "Koopa.h"
 #include "SuperLeaf.h"
 #include "Point.h"
+#include "YellowBrick.h"
 
 #include "Collision.h"
 
@@ -95,6 +96,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopa(e);
 	else if (dynamic_cast<CSuperLeaf*>(e->obj))
 		OnCollisionWithSuperLeaf(e);
+	else if (dynamic_cast<CYellowBrick*>(e->obj))
+		OnCollisionWithYellowBrick(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -375,6 +378,12 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 			}
 		}
 	}
+}
+
+void CMario::OnCollisionWithYellowBrick(LPCOLLISIONEVENT e) {
+	CYellowBrick* brick = dynamic_cast<CYellowBrick*>(e->obj);
+	if (e->ny > 0)
+		brick->Break();
 }
 
 void CMario::OnCollisionWithSuperLeaf(LPCOLLISIONEVENT e) {

@@ -77,6 +77,7 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e) override;
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithEnemy(LPCOLLISIONEVENT e);
+	void OnCollisionWithYellowBrick(LPCOLLISIONEVENT e);
 	void CheckForEdge(vector<LPGAMEOBJECT>* coObjects);
 
 	void BeKicked(float dir);

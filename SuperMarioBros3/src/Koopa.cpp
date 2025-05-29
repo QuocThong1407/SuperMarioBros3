@@ -6,6 +6,7 @@
 #include "QuestionBrick.h"
 #include "Goomba.h"
 #include "Paragoomba.h"
+#include "YellowBrick.h"
 
 void CKoopa::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
@@ -194,7 +195,9 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
     }
 
     if (dynamic_cast<CQuestionBrick*>(e->obj))
-        OnCollisionWithQuestionBrick(e);   
+        OnCollisionWithQuestionBrick(e); 
+    if (dynamic_cast<CYellowBrick*>(e->obj))
+        OnCollisionWithYellowBrick(e);
 }
 
 void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
@@ -211,6 +214,15 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
             qb->SetState(QUESTION_BRICK_STATE_UNBOXING);
         }
     }
+}
+
+void CKoopa::OnCollisionWithYellowBrick(LPCOLLISIONEVENT e) {
+    if (!e->obj->IsBlocking()) return;
+
+    CYellowBrick* brick = dynamic_cast<CYellowBrick*>(e->obj);
+
+    if (this->IsKicked() && e->nx != 0)
+        brick->Break();
 }
 
 void CKoopa::OnCollisionWithEnemy(LPCOLLISIONEVENT e) {
@@ -254,7 +266,7 @@ void CKoopa::CheckForEdge(vector<LPGAMEOBJECT>* coObjects) {
     float px, py;
     GetPosition(px, py);
 
-    float checkX = vx > 0 ? px + KOOPA_BBOX_WIDTH / 2 + 1 : px - KOOPA_BBOX_WIDTH / 2 - 1;
+    float checkX = vx > 0 ? px + KOOPA_BBOX_WIDTH / 2 - 3: px - KOOPA_BBOX_WIDTH / 2 + 3;
     float checkY = py + KOOPA_BBOX_HEIGHT + 1;
 
     bool foundGround = false;

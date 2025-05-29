@@ -133,6 +133,7 @@
     <ClInclude Include="src\Animations.h" />
     <ClInclude Include="src\AssetIDs.h" />
     <ClInclude Include="src\Brick.h" />
+    <ClInclude Include="src\BrokenBrick.h" />
     <ClInclude Include="src\Bullet.h" />
     <ClInclude Include="src\CloudBlock.h" />
     <ClInclude Include="src\Coin.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Animations.cpp" />
     <ClCompile Include="src\Brick.cpp" />
+    <ClCompile Include="src\BrokenBrick.cpp" />
     <ClCompile Include="src\Bullet.cpp" />
     <ClCompile Include="src\CloudBlock.cpp" />
     <ClCompile Include="src\Coin.cpp" />
