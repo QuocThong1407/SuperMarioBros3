@@ -27,9 +27,6 @@ assets\data\objects\hud.txt
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
 
-# HUD
-19	130	220
-
 # BIG BUSH
 # BUSH 1
 5	32	128	16	16	2	100100	100105	100105	0
@@ -491,6 +488,9 @@ assets\data\objects\hud.txt
 5	2768	160	16	16	1	100910	100910	100910	0
 5	2784	176	16	16	1	100915	100915	100915	0
 5	2752	176	16	16	2	100900	100905	100905	0
+
+# HUD
+19	130	220
 
 # MARIO
 0	20	10

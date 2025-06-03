@@ -2,6 +2,9 @@
 
 #include "GameObject.h"
 
+#define HUD_BACKGROUND_BBOX_WIDTH 262
+#define HUD_BACKGROUND_BBOX_HEIGHT 36
+
 #define ID_ANI_HUD_BACKGROUND        25000
 
 #define ID_ANI_MUSHROOM_CARD         25001

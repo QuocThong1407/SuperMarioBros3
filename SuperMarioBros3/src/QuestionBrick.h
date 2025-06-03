@@ -48,4 +48,5 @@ public:
 	void Disable() { SetState(QUESTION_BRICK_STATE_DISABLED); }
 
 	int GetIsUnboxed() { return isUnboxed; }
+	int GetItem() { return item; }
 };

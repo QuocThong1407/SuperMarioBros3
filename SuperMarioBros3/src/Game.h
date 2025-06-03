@@ -100,6 +100,9 @@ public:
 	int GetBackBufferWidth() { return backBufferWidth; }
 	int GetBackBufferHeight() { return backBufferHeight; }
 
+	float GetCamPosX() { return cam_x; }
+	float GetCamPosY() { return cam_y; }
+
 	static CGame* GetInstance();
 
 	void SetPointSamplerState();

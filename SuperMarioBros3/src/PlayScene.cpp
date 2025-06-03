@@ -23,6 +23,7 @@
 #include "BrokenBrick.h"
 #include "SwitchBlock.h"
 #include "Hud.h"
+#include "GameData.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -260,6 +261,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_HUD:
 	{
 		obj = new CHud(x, y);
+		hud = dynamic_cast<CHud*>(obj);
 		break;
 	}
 
@@ -352,7 +354,22 @@ void CPlayScene::Load()
 
 	f.close();
 
+	CGameData::GetInstance()->StartCountDown();
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
+}
+
+void CPlayScene::UpdateHud(DWORD dt)
+{
+	CGame* game = CGame::GetInstance();
+
+	float camX, camY;
+	game->GetCamPos(camX, camY);
+
+	float hudX = camX + game->GetBackBufferWidth() / 2;
+	float hudY = camY + game->GetBackBufferHeight() / 2 + 101;
+
+	hud->SetPosition(hudX, hudY);
+	hud->Update(dt);
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -378,7 +395,7 @@ void CPlayScene::Update(DWORD dt)
 		if (my > 94)
 			cy = 0;
 		else
-			cy = (my >= -113) ? my - screenH / 2 + 10:  -113 - screenH / 2 + 10;
+			cy = (my >= -113) ? my - screenH / 2 + 30:  -113 - screenH / 2 + 30;
 	}
 	else
 		cy = 0;
@@ -423,6 +440,7 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	player->Update(dt, &coObjects);
+	UpdateHud(dt);
 
 	PurgeDeletedObjects();
 }

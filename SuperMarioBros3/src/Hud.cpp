@@ -7,6 +7,8 @@
 
 void CHud::Update(DWORD dt)
 {
+	CGameData::GetInstance()->CountDownRemainTime();
+
 	if (isFullPowerDark && GetTickCount64() - fullPowerFlashStart > 300)
 	{
 		isFullPowerDark = false;
@@ -49,7 +51,7 @@ void CHud::RenderWorldText()
 	RenderChar('R', tx + HUD_CHAR_SPACING * 2, ty);
 	RenderChar('L', tx + HUD_CHAR_SPACING * 3, ty);
 	RenderChar('D', tx + HUD_CHAR_SPACING * 4, ty);
-	RenderNumber(1, tx + HUD_CHAR_SPACING * 5.3, ty + 1); 
+	RenderNumber(1, tx + HUD_CHAR_SPACING * 5 + 2, ty + 1); 
 }
 
 void CHud::RenderIconX()
@@ -64,13 +66,17 @@ void CHud::RenderIconClock()
 
 void CHud::RenderIconDolar()
 {
-	CAnimations::GetInstance()->Get(ID_ANI_ICON_DOLAR)->Render(x + 4, y - 9);
+	CAnimations::GetInstance()->Get(ID_ANI_ICON_DOLAR)->Render(x + 5, y - 9);
 }
 
 void CHud::RenderCoins()
 {
 	int coin = CGameData::GetInstance()->GetCoin();
-	RenderNumber(coin, x + 14, y - 8, 2);
+
+	if (coin < 10)
+		RenderNumber(coin, x + 22, y - 8, 1);
+	else
+		RenderNumber(coin, x + 14, y - 8, 2);
 }
 
 void CHud::RenderTime()
@@ -82,7 +88,7 @@ void CHud::RenderTime()
 void CHud::RenderLife()
 {
 	int life = CGameData::GetInstance()->GetLife();
-	RenderNumber(life, x - 86, y + 2);
+	RenderNumber(life, x - 76, y + 2);
 }
 
 void CHud::RenderPoints()
@@ -94,10 +100,15 @@ void CHud::RenderPoints()
 void CHud::RenderFrame()
 {
 	CAnimations* animations = CAnimations::GetInstance();
+	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
+	CMario* mario = dynamic_cast<CMario*>(scene->GetPlayer());
 
 	animations->Get(ID_ANI_M_BOX)->Render(x - 108, y);
 
-	animations->Get(ID_ANI_BLACK_P_BOX)->Render(x - 7, y - 8);
+	if (mario->IsFullPower()) 
+		animations->Get(ID_ANI_WHITE_P_BOX)->Render(x - 7, y - 8);
+	else
+		animations->Get(ID_ANI_BLACK_P_BOX)->Render(x - 7, y - 8);
 }
 
 void CHud::RenderPowerBar()

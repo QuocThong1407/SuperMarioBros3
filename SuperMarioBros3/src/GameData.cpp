@@ -28,8 +28,12 @@ void CGameData::StartCountDown() {
 }
 
 void CGameData::CountDownRemainTime() {
+	if (startTime == 0)
+		startTime = GetTickCount64();
 	DWORD now = GetTickCount64();
 	DWORD elapsed = (now - startTime) / 1000;
+
+	DebugOut(L"[HUD] Now: %d - Start: %d = %d => Remain: %d\n", now, startTime, elapsed, remainTime);
 
 	if (elapsed < 300)
 		remainTime = 300 - elapsed;

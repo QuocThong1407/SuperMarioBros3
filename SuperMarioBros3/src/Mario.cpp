@@ -18,6 +18,7 @@
 #include "Point.h"
 #include "YellowBrick.h"
 #include "SwitchBlock.h"
+#include "GameData.h"
 
 #include "Collision.h"
 
@@ -41,6 +42,29 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			isTransforming = false;
 
 		return; 
+	}
+
+	ULONGLONG now = GetTickCount64();
+
+	bool isRunning = abs(vx) > MARIO_WALKING_SPEED; 
+
+	if (isRunning)
+	{
+		if (now - lastPowerUpdate >= MARIO_POWER_INCREMENT_TIME)
+		{
+			if (power < MARIO_POWER_MAX)
+				power++;
+			lastPowerUpdate = now;
+		}
+	}
+	else
+	{
+		if (now - lastPowerUpdate >= MARIO_POWER_DECREMENT_TIME)
+		{
+			if (power > 0)
+				power--;
+			lastPowerUpdate = now;
+		}
 	}
 
 	if (dynamic_cast<CKoopa*>(item)) {
@@ -122,6 +146,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			point->SetState(POINT_STATE_100);
 			scene->AddObject(point);
 
+			CGameData::GetInstance()->AddPoint(100);
 
 			if (level == MARIO_LEVEL_RACOON)
 				vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
@@ -160,6 +185,9 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	e->obj->Delete();
 	coin++;
+
+	CGameData::GetInstance()->AddCoin(1);
+	CGameData::GetInstance()->AddPoint(50);
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -175,6 +203,11 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 
 	if (e->ny > 0) {
 		questionBrick->Unbox();
+
+		if (questionBrick->GetItem() == QUESTION_BRICK_ITEM_COIN) {
+			CGameData::GetInstance()->AddCoin(1);
+			CGameData::GetInstance()->AddPoint(100);
+		}
 	}
 }
 
@@ -196,6 +229,8 @@ void CMario::OnCollisionWithSuperMushroom(LPCOLLISIONEVENT e) {
 	mushroom->Delete();
 	point->SetState(POINT_STATE_1000);
 	scene->AddObject(point);
+
+	CGameData::GetInstance()->AddPoint(1000);
 }
 
 void CMario::OnCollisionWithPiranhaPlant(LPCOLLISIONEVENT e) {
@@ -263,12 +298,14 @@ void CMario::OnCollisionWithParagoomba(LPCOLLISIONEVENT e) {
 				paragoomba->SetState(PARAGOOMBA_STATE_WALKING);
 				point->SetState(POINT_STATE_200);
 				scene->AddObject(point);
+				CGameData::GetInstance()->AddPoint(200);
 			}
 			else
 			{
 				paragoomba->SetState(PARAGOOMBA_STATE_DIE);
 				point->SetState(POINT_STATE_100);
 				scene->AddObject(point);
+				CGameData::GetInstance()->AddPoint(100);
 			}
 
 			if (level == MARIO_LEVEL_RACOON)
@@ -321,6 +358,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 			koopa->SetState(KOOPA_STATE_WALKING);
 			point->SetState(POINT_STATE_100);
 			scene->AddObject(point);
+			CGameData::GetInstance()->AddPoint(100);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 		else {
@@ -329,6 +367,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 				koopa->SetState(KOOPA_STATE_DEFEND);
 				point->SetState(POINT_STATE_100);
 				scene->AddObject(point);
+				CGameData::GetInstance()->AddPoint(100);
 				vy = -MARIO_JUMP_DEFLECT_SPEED;
 			}
 			else if (koopa->IsKicked())
@@ -436,6 +475,7 @@ void CMario::OnCollisionWithSuperLeaf(LPCOLLISIONEVENT e) {
 	leaf->Delete();
 	point->SetState(POINT_STATE_1000);
 	scene->AddObject(point);
+	CGameData::GetInstance()->AddPoint(1000);
 }
 
 void CMario::DropItem() {
