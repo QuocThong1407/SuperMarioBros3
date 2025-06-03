@@ -28,3 +28,5 @@ height	240
 120	assets\textures\dialogs.png
 130	assets\textures\HUD.png
 140	assets\textures\hidden_map.png
+150	assets\textures\HUD2.png
+160	assets\textures\HUD3.png

@@ -140,8 +140,10 @@
     <ClInclude Include="src\Collision.h" />
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Goomba.h" />
+    <ClInclude Include="src\Hud.h" />
     <ClInclude Include="src\KeyEventHandler.h" />
     <ClInclude Include="src\Koopa.h" />
     <ClInclude Include="src\Mario.h" />
@@ -177,8 +179,10 @@
     <ClCompile Include="src\Collision.cpp" />
     <ClCompile Include="src\debug.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GameData.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Goomba.cpp" />
+    <ClCompile Include="src\Hud.cpp" />
     <ClCompile Include="src\Koopa.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Mario.cpp" />

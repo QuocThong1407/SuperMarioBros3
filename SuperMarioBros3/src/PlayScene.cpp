@@ -22,6 +22,7 @@
 #include "YellowBrick.h"
 #include "BrokenBrick.h"
 #include "SwitchBlock.h"
+#include "Hud.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -253,6 +254,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SWITCH_BLOCK:
 	{
 		obj = new CSwitchBlock(x, y);
+		break;
+	}
+
+	case OBJECT_TYPE_HUD:
+	{
+		obj = new CHud(x, y);
 		break;
 	}
 

@@ -19,12 +19,16 @@ assets\data\objects\wood_block.txt
 assets\data\objects\yellow_brick.txt
 assets\data\objects\broken_brick.txt
 assets\data\objects\switch_block.txt
+assets\data\objects\hud.txt
 
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
+
+# HUD
+19	130	220
 
 # BIG BUSH
 # BUSH 1
