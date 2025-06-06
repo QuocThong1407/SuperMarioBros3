@@ -25,6 +25,7 @@
 #include "Hud.h"
 #include "GameData.h"
 #include "TunnelPortal.h"
+#include "RandomCard.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -285,6 +286,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		obj = new CHud(x, y);
 		hud = dynamic_cast<CHud*>(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_RANDOM_CARD:
+	{
+		obj = new CRandomCard(x, y);
 		break;
 	}
 

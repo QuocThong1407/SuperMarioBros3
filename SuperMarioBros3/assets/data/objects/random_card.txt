@@ -1,0 +1,14 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+# MUSHROOM
+200001	156	121	172	137	50
+# STAR
+200002	201	121	217	137	50
+# FLOWER
+200003	309	121	325	137	50
+	
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+26001	200001	150
+26002	200002	150
+26003	200003	150

@@ -20,6 +20,7 @@
 #include "SwitchBlock.h"
 #include "GameData.h"
 #include "TunnelPortal.h"
+#include "RandomCard.h"
 
 #include "Collision.h"
 
@@ -146,6 +147,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithSwitchBlock(e);
 	else if (dynamic_cast<CTunnelPortal*>(e->obj))
 		OnCollisionWithTunnelPortal(e);
+	else if (dynamic_cast<CRandomCard*>(e->obj))
+		OnCollisionWithRandomCard(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -513,6 +516,17 @@ void CMario::OnCollisionWithSwitchBlock(LPCOLLISIONEVENT e) {
 			}
 		}
 	}
+}
+
+void CMario::OnCollisionWithRandomCard(LPCOLLISIONEVENT e)
+{
+	CRandomCard* card = dynamic_cast<CRandomCard*>(e->obj);
+	if (!card) return;
+
+	card->Stop();
+
+	int result = card->GetResult(); 
+	CGameData::GetInstance()->AddCard(result); 
 }
 
 void CMario::OnCollisionWithSuperLeaf(LPCOLLISIONEVENT e) {

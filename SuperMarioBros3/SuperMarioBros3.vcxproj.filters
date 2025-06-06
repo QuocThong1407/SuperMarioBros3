@@ -135,6 +135,9 @@
     <ClInclude Include="src\TunnelPortal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\RandomCard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp">
@@ -243,6 +246,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TunnelPortal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RandomCard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

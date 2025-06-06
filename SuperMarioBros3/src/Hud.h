@@ -70,6 +70,7 @@ public:
     void RenderTime();
     void RenderLife();
     void RenderFrame();
+    void RenderCards();
     void RenderPowerBar();
 
     void RenderNumber(int number, float x, float y, int maxDigits = 0);

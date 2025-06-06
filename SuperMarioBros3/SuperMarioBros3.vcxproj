@@ -154,6 +154,7 @@
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Portal.h" />
     <ClInclude Include="src\QuestionBrick.h" />
+    <ClInclude Include="src\RandomCard.h" />
     <ClInclude Include="src\SampleKeyEventHandler.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Sprite.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Portal.cpp" />
     <ClCompile Include="src\QuestionBrick.cpp" />
+    <ClCompile Include="src\RandomCard.cpp" />
     <ClCompile Include="src\SampleKeyEventHandler.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Sprites.cpp" />

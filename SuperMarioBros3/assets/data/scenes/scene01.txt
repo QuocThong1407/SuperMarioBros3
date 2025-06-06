@@ -22,6 +22,7 @@ assets\data\objects\yellow_brick.txt
 assets\data\objects\broken_brick.txt
 assets\data\objects\switch_block.txt
 assets\data\objects\hud.txt
+assets\data\objects\random_card.txt
 
 #
 [OBJECTS]
@@ -487,6 +488,12 @@ assets\data\objects\hud.txt
 5	2768	160	16	16	1	100910	100910	100910	0
 5	2784	176	16	16	1	100915	100915	100915	0
 5	2752	176	16	16	2	100900	100905	100905	0
+
+# RANDOM CARD
+21	2682	112
+
+# BORDER BOX
+5	2682	112	26	26	1	101100	101100	101100	0
 
 # MARIO
 0	20	10

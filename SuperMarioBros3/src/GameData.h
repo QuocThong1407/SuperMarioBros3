@@ -2,7 +2,7 @@
 #include <windows.h>
 
 #define ID_HIDDEN_MAP 2
-#define ID_HI
+#define MAX_CARD 3
 
 class CGameData {
 private:
@@ -23,6 +23,9 @@ private:
 	int savedCoin = 0;
 	float respawnX = 0;
 	float respawnY = 0;
+
+	int collectedCards[MAX_CARD] = { -1, -1, -1 }; 
+	int cardCount = 0;
 
 public:
 	CGameData();
@@ -62,6 +65,10 @@ public:
 	void SetRespawn(float x, float y);
 	float GetRespawnX() const { return respawnX; }
 	float GetRespawnY() const { return respawnY; }
+
+	int GetCard(int index) const { return (index < cardCount) ? collectedCards[index] : -1; }
+	int GetCardCount() const { return cardCount; }
+	void AddCard(int cardType);
 
 	static CGameData* GetInstance();
 };

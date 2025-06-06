@@ -188,6 +188,7 @@ class CMario : public CGameObject
 	void OnCollisionWithYellowBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithSwitchBlock(LPCOLLISIONEVENT e);
 	void OnCollisionWithTunnelPortal(LPCOLLISIONEVENT e);
+	void OnCollisionWithRandomCard(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();

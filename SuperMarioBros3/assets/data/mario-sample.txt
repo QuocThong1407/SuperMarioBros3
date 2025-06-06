@@ -30,3 +30,4 @@ height	240
 140	assets\textures\hidden_map.png
 150	assets\textures\HUD2.png
 160	assets\textures\HUD3.png
+170	assets\textures\HUD4.png

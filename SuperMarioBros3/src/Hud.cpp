@@ -26,6 +26,7 @@ void CHud::Render()
 	RenderBackground();
 	RenderWorldText();
 	RenderFrame();
+	RenderCards();
 	RenderIconX();
 	RenderLife();
 	RenderPoints();
@@ -109,6 +110,28 @@ void CHud::RenderFrame()
 		animations->Get(ID_ANI_WHITE_P_BOX)->Render(x - 7, y - 8);
 	else
 		animations->Get(ID_ANI_BLACK_P_BOX)->Render(x - 7, y - 8);
+}
+
+void CHud::RenderCards()
+{
+	int cardCount = CGameData::GetInstance()->GetCardCount();
+	if (cardCount == 0) return;
+
+	float startX = x + 50; 
+	float yPos = y - 3;
+
+	for (int i = 0; i < cardCount; i++)
+	{
+		int cardType = CGameData::GetInstance()->GetCard(i);
+
+		int aniId = ID_ANI_STAR_CARD;
+
+		if (cardType == 1) aniId = ID_ANI_MUSHROOM_CARD;
+		else if (cardType == 2) aniId = ID_ANI_STAR_CARD;
+		else aniId = ID_ANI_FLOWER_CARD;
+
+		CAnimations::GetInstance()->Get(aniId)->Render(startX + i * 25, yPos);
+	}
 }
 
 void CHud::RenderPowerBar()

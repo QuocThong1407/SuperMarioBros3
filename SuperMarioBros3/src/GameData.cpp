@@ -55,3 +55,9 @@ void CGameData::SetRespawn(float x, float y) {
 	respawnX = x;
 	respawnY = y;
 }
+
+void CGameData::AddCard(int cardType)
+{
+	if (cardCount < MAX_CARD)
+		collectedCards[cardCount++] = cardType;
+}
