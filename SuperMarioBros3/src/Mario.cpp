@@ -56,6 +56,43 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		return; 
 	}
 
+	if (isTailAttacking)
+	{
+		for (LPGAMEOBJECT obj : *coObjects)
+		{
+			if (dynamic_cast<CKoopa*>(obj) || dynamic_cast<CGoomba*>(obj) || dynamic_cast<CParagoomba*>(obj) || dynamic_cast<CPiranhaPlant*>(obj))
+			{
+				float ox, oy;
+				obj->GetPosition(ox, oy);
+
+				if (abs(ox - x) < MARIO_TAIL_RADIUS && abs(oy - y) < MARIO_TAIL_RADIUS)
+				{
+					if (CKoopa* koopa = dynamic_cast<CKoopa*>(obj))
+					{
+						koopa->SetState(KOOPA_STATE_DEFEND);
+					}
+					if (CGoomba* goomba = dynamic_cast<CGoomba*>(obj))
+					{
+						goomba->SetState(GOOMBA_STATE_DIE);
+					}
+					if (CParagoomba* paragoomba = dynamic_cast<CParagoomba*>(obj))
+					{
+						paragoomba->SetState(PARAGOOMBA_STATE_DIE);
+					}
+					if (CPiranhaPlant* plant = dynamic_cast<CPiranhaPlant*>(obj))
+					{
+						plant->SetState(PIRANHA_PLANT_STATE_DIE);
+					}
+				}
+			}
+		}
+	}
+
+	if (isTailAttacking && GetTickCount64() - tail_attack_start > MARIO_TAIL_ATTACK_TIME)
+	{
+		isTailAttacking = false;
+	}
+
 	if (isTransforming)
 	{
 		if (GetTickCount64() - transform_start > MARIO_TRANSFORM_TIME)
@@ -749,6 +786,8 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if (isTailAttacking)
+		aniId = (nx > 0) ? ID_ANI_MARIO_WAGGING_TAIL_RIGHT : ID_ANI_MARIO_WAGGING_TAIL_LEFT;
 	else if (isTransforming)
 		aniId = (nx > 0) ? ID_ANI_MARIO_TRANSFORMING_RIGHT : ID_ANI_MARIO_TRANSFORMING_LEFT;
 	else if (isEnteringTunnel)
@@ -949,4 +988,12 @@ void CMario::StartEnterTunnel()
 {
 	isEnteringTunnel = true;
 	vx = 0; 
+}
+
+void CMario::StartTailAttack()
+{
+	if (isTailAttacking) return;
+
+	isTailAttacking = true;
+	tail_attack_start = GetTickCount64();
 }

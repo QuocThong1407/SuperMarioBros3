@@ -13,6 +13,7 @@ void CPiranhaPlant::GetBoundingBox(float& l, float& t, float& r, float& b) {
 void CPiranhaPlant::Render()
 {
 	if (isDeleted) return;
+	if (state == PIRANHA_PLANT_STATE_DIE) return;
 
 	int aniId = -1;
 
@@ -80,6 +81,9 @@ void CPiranhaPlant::SetState(int state)
 		hasShot = false;
 		vy = PIRANHA_PLANT_SPEED_Y;
 		timeDownStart = GetTickCount64();
+		break;
+	case PIRANHA_PLANT_STATE_DIE:
+		vx = vy = 0;
 		break;
 	}
 }

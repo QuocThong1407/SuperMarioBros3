@@ -24,6 +24,9 @@
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
+#define MARIO_TAIL_ATTACK_TIME 300
+#define MARIO_TAIL_RADIUS 30
+
 #define MARIO_STATE_DIE				-10
 #define MARIO_STATE_IDLE			0
 #define MARIO_STATE_WALKING_RIGHT	100
@@ -113,6 +116,9 @@
 
 #define ID_ANI_MARIO_ENTER_TUNNEL 2400
 
+#define ID_ANI_MARIO_WAGGING_TAIL_RIGHT 2500
+#define ID_ANI_MARIO_WAGGING_TAIL_LEFT 2501
+
 #define ID_ANI_MARIO_TRANSFORMING_RIGHT 3000
 #define ID_ANI_MARIO_TRANSFORMING_LEFT 3001
 #define MARIO_TRANSFORM_TIME 700
@@ -154,6 +160,9 @@ class CMario : public CGameObject
 	BOOLEAN isSitting;
 	BOOLEAN isFlying;
 	BOOLEAN isEnteringTunnel;
+	bool isTailAttacking;
+
+	ULONGLONG tail_attack_start = 0;
 
 	int enterDirection = 0; 
 	float enterTargetY = 0;
@@ -200,6 +209,7 @@ public:
 		isSitting = false;
 		isFlying = false;
 		isEnteringTunnel = false;
+		isTailAttacking = false;
 
 		maxVx = 0.0f;
 		ax = 0.0f;
@@ -248,6 +258,8 @@ public:
 
 	void StartEnterTunnel();
 	bool IsEnteringTunnel() { return isEnteringTunnel; }
+
+	void StartTailAttack();
 
 	void DropItem();
 };
