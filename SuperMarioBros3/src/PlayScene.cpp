@@ -24,10 +24,13 @@
 #include "SwitchBlock.h"
 #include "Hud.h"
 #include "GameData.h"
+#include "TunnelPortal.h"
 
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
+
+D3DXCOLOR backgroundColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
@@ -38,6 +41,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 
 
 #define SCENE_SECTION_UNKNOWN -1
+#define SCENE_SECTION_SETTINGS	0
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
 
@@ -100,6 +104,25 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	}
 
 	CAnimations::GetInstance()->Add(ani_id, ani);
+}
+
+void CPlayScene::_ParseSection_SETTINGS(string line)
+{
+	vector<string> tokens = split(line);
+	if (tokens[0] == "background" && tokens.size() >= 5)
+	{
+		int r = atoi(tokens[1].c_str());
+		int g = atoi(tokens[2].c_str());
+		int b = atoi(tokens[3].c_str());
+		int a = atoi(tokens[4].c_str());
+
+		backgroundColor = D3DXCOLOR(
+			r / 255.0f,
+			g / 255.0f,
+			b / 255.0f,
+			a / 255.0f
+		);
+	}
 }
 
 /*
@@ -265,6 +288,21 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
+	case OBJECT_TYPE_TUNNEL_PORTAL:
+	{
+		float x = stof(tokens[1]);
+		float y = stof(tokens[2]);
+		int tunnel_type = stoi(tokens[3]);
+		int sceneId = stoi(tokens[4]);
+		int direction = stoi(tokens[5]);
+		float exitX = stof(tokens[6]);
+		float exitY = stof(tokens[7]);
+
+		CTunnelPortal* portal = new CTunnelPortal(x, y, tunnel_type, sceneId, direction, exitX, exitY);
+		objects.push_back(portal);
+		return;
+	}
+
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = (float)atof(tokens[3].c_str());
@@ -338,6 +376,7 @@ void CPlayScene::Load()
 		string line(str);
 
 		if (line[0] == '#') continue;	// skip comment lines	
+		if (line == "[SETTINGS]") { section = SCENE_SECTION_SETTINGS; continue; }
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
@@ -346,13 +385,32 @@ void CPlayScene::Load()
 		// data section
 		//
 		switch (section)
-		{ 
+		{
+		case SCENE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
 			case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		}
 	}
 
 	f.close();
+
+	if (player && CGameData::GetInstance()->IsEnterTunnel() && (CGameData::GetInstance()->IsExitHiddenMap() || CGameData::GetInstance()->IsEntryHiddenMap()))
+	{
+		CMario* mario = dynamic_cast<CMario*>(player);
+		if (mario)
+		{
+			CGameData* data = CGameData::GetInstance();
+			mario->SetPosition(data->GetRespawnX(), data->GetRespawnY());
+
+			mario->SetLevel(data->GetSavedMarioLevel());
+
+			data->SetLife(data->GetSavedLife());
+			data->SetPoint(data->GetSavedPoint());
+			data->SetCoin(data->GetSavedCoin());
+		}
+
+		CGameData::GetInstance()->OutTunnel();
+	}
 
 	CGameData::GetInstance()->StartCountDown();
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
@@ -392,10 +450,16 @@ void CPlayScene::Update(DWORD dt)
 	float cy;
 
 	if (mario->GetLevel() == MARIO_LEVEL_RACOON) {
-		if (my > 94)
+		if (mario->IsEnteringTunnel() == false && CGameData::GetInstance()->GetCurrentSceneId() == ID_HIDDEN_MAP)
 			cy = 0;
-		else
-			cy = (my >= -113) ? my - screenH / 2 + 30:  -113 - screenH / 2 + 30;
+		else if (mario->IsEnteringTunnel() && CGameData::GetInstance()->GetCurrentSceneId() != ID_HIDDEN_MAP)
+			cy = 0;
+		else {
+			if (my > 78)
+				cy = 0;
+			else
+				cy = (my >= -113) ? my - screenH / 2 + 42 : -113 - screenH / 2 + 42;
+		}
 	}
 	else
 		cy = 0;

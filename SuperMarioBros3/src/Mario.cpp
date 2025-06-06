@@ -19,6 +19,7 @@
 #include "YellowBrick.h"
 #include "SwitchBlock.h"
 #include "GameData.h"
+#include "TunnelPortal.h"
 
 #include "Collision.h"
 
@@ -34,6 +35,24 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
+	}
+
+	if (isEnteringTunnel)
+	{
+		float step = MARIO_ENTER_TUNNEL_SPEED * dt;
+		if (enterDirection == 1) y += step;
+		else if (enterDirection == -1) y -= step;
+
+		if ((enterDirection == -1 && y <= enterTargetY) || (enterDirection == 1 && y >= enterTargetY))
+		{
+			y = enterTargetY;
+			isEnteringTunnel = false;
+
+			int nextScene = CGameData::GetInstance()->GetCurrentSceneId();
+			CGame::GetInstance()->InitiateSwitchScene(nextScene);
+		}
+
+		return; 
 	}
 
 	if (isTransforming)
@@ -125,6 +144,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithYellowBrick(e);
 	else if (dynamic_cast<CSwitchBlock*>(e->obj))
 		OnCollisionWithSwitchBlock(e);
+	else if (dynamic_cast<CTunnelPortal*>(e->obj))
+		OnCollisionWithTunnelPortal(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -194,6 +215,37 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+}
+
+void CMario::OnCollisionWithTunnelPortal(LPCOLLISIONEVENT e)
+{
+	CTunnelPortal* portal = dynamic_cast<CTunnelPortal*>(e->obj);
+	if (!portal) return;
+
+	CGame* game = CGame::GetInstance();
+
+	int keyDownDir = 0;
+	if (portal->GetDirection() == -1 && game->IsKeyDown(DIK_UP)) 
+		keyDownDir = -1;
+	else if (portal->GetDirection() == 1 && game->IsKeyDown(DIK_DOWN)) 
+		keyDownDir = 1;
+
+	if (keyDownDir == portal->GetDirection())
+	{
+		int life = CGameData::GetInstance()->GetLife();
+		int point = CGameData::GetInstance()->GetPoint();
+		int coin = CGameData::GetInstance()->GetCoin();
+
+		CGameData::GetInstance()->SetMarioState(level, life, point, coin);
+		CGameData::GetInstance()->SetCurrentSceneId(portal->GetSceneId());
+
+		portal->OnMarioEnter();
+
+		enterDirection = portal->GetDirection();
+		enterTargetY = (enterDirection == -1) ? y - 42 : y + 42;
+		SetState(MARIO_STATE_ENTER_TUNNEL);
+		StartEnterTunnel(); 
+	}
 }
 
 void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e) 
@@ -685,6 +737,8 @@ void CMario::Render()
 		aniId = ID_ANI_MARIO_DIE;
 	else if (isTransforming)
 		aniId = (nx > 0) ? ID_ANI_MARIO_TRANSFORMING_RIGHT : ID_ANI_MARIO_TRANSFORMING_LEFT;
+	else if (isEnteringTunnel)
+		aniId = ID_ANI_MARIO_ENTER_TUNNEL;
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
@@ -779,6 +833,15 @@ void CMario::SetState(int state)
 		}
 		break;
 
+	case MARIO_STATE_ENTER_TUNNEL:
+		isEnteringTunnel = true;
+		vx = 0;
+		if (enterDirection == -1)	
+			vy = MARIO_ENTER_TUNNEL_SPEED;
+		else if (enterDirection == 1) 
+			vy = -MARIO_ENTER_TUNNEL_SPEED;
+		break;
+
 	case MARIO_STATE_SIT_RELEASE:
 		if (isSitting)
 		{
@@ -866,4 +929,10 @@ void CMario::StartTransform()
 	isTransforming = true;
 	transform_start = GetTickCount64();
 	vx = vy = ax = ay = 0; 
+}
+
+void CMario::StartEnterTunnel()
+{
+	isEnteringTunnel = true;
+	vx = 0; 
 }

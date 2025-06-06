@@ -8,6 +8,7 @@
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
+#define MARIO_ENTER_TUNNEL_SPEED   0.05f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
 #define MARIO_ACCEL_RUN_X	0.0007f
@@ -40,6 +41,8 @@
 #define MARIO_STATE_FLY_RIGHT	700
 #define MARIO_STATE_FLY_LEFT	701
 #define MARIO_STATE_RELEASE_FLY 702
+
+#define MARIO_STATE_ENTER_TUNNEL    800
 
 
 #pragma region ANIMATION_ID
@@ -108,6 +111,8 @@
 #define ID_ANI_MARIO_FLY_JUMP_RIGHT 2300
 #define ID_ANI_MARIO_FLY_JUMP_LEFT 2301
 
+#define ID_ANI_MARIO_ENTER_TUNNEL 2400
+
 #define ID_ANI_MARIO_TRANSFORMING_RIGHT 3000
 #define ID_ANI_MARIO_TRANSFORMING_LEFT 3001
 #define MARIO_TRANSFORM_TIME 700
@@ -148,6 +153,10 @@ class CMario : public CGameObject
 {
 	BOOLEAN isSitting;
 	BOOLEAN isFlying;
+	BOOLEAN isEnteringTunnel;
+
+	int enterDirection = 0; 
+	float enterTargetY = 0;
 
 	bool isTransforming;
 	ULONGLONG transform_start;
@@ -178,6 +187,7 @@ class CMario : public CGameObject
 	void OnCollisionWithSuperLeaf(LPCOLLISIONEVENT e);
 	void OnCollisionWithYellowBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithSwitchBlock(LPCOLLISIONEVENT e);
+	void OnCollisionWithTunnelPortal(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -188,6 +198,7 @@ public:
 	{
 		isSitting = false;
 		isFlying = false;
+		isEnteringTunnel = false;
 
 		maxVx = 0.0f;
 		ax = 0.0f;
@@ -233,5 +244,9 @@ public:
 
 	void StartTransform();
 	bool IsTransforming() { return isTransforming; }
+
+	void StartEnterTunnel();
+	bool IsEnteringTunnel() { return isEnteringTunnel; }
+
 	void DropItem();
 };

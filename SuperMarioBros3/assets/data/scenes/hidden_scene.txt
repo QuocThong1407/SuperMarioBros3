@@ -1,9 +1,13 @@
 # list of object assets to load in this scene
+[SETTINGS]
+background	0	0	0	255	
+
 [ASSETS]
 assets\data\objects\mario.txt
 assets\data\objects\platform.txt
 assets\data\objects\coin.txt
 assets\data\objects\tunnel.txt
+assets\data\objects\hud.txt
 
 #
 [OBJECTS]
@@ -12,7 +16,7 @@ assets\data\objects\tunnel.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	160	30
+0	145	30
 
 # COIN
 4	232	40
@@ -39,7 +43,7 @@ assets\data\objects\tunnel.txt
 7	144	24	5
 
 7	368	8	4
-7	368	24	5
+20	368	24	5	1	-1	2320	152
 
 # BLUE BRICK
 5	8	8	16	16	8	102000	102000	102000	1	1
@@ -73,7 +77,14 @@ assets\data\objects\tunnel.txt
 5	8	152	16	16	8	102000	102000	102000	1	1
 5	264	152	16	16	16	102000	102000	102000	1	1
 
+5	8	-72	16	16	32	102000	102000	102000	1	1
+5	8	-56	16	16	32	102000	102000	102000	1	1
+5	8	-40	16	16	32	102000	102000	102000	1	1
+5	8	-24	16	16	32	102000	102000	102000	1	1
+5	8	-8	16	16	32	102000	102000	102000	1	1
 5	8	168	16	16	32	102000	102000	102000	1	1
 5	8	184	16	16	32	102000	102000	102000	1	1
+5	8	200	16	16	32	102000	102000	102000	1	1
 
-
+# HUD
+19	130	220
