@@ -38,6 +38,16 @@
 #define ID_ANI_CHAR_R                25032
 #define ID_ANI_CHAR_L                25033
 #define ID_ANI_CHAR_D                25034
+#define ID_ANI_CHAR_A                25035
+#define ID_ANI_CHAR_C                25036
+#define ID_ANI_CHAR_E                25037
+#define ID_ANI_CHAR_G                25038
+#define ID_ANI_CHAR_S                25039
+#define ID_ANI_CHAR_T                25040
+#define ID_ANI_CHAR_U                25041
+#define ID_ANI_CHAR_Y                25042
+
+
 
 #define HUD_NUMBER_SPACING           8
 #define HUD_CHAR_SPACING             8

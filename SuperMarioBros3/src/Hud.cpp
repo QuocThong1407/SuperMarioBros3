@@ -120,6 +120,28 @@ void CHud::RenderCards()
 	float startX = x + 50; 
 	float yPos = y - 3;
 
+	float tx = x - 40;
+	float ty = y - 180;
+
+	std::string line1 = "COURSE CLEAR";
+	std::string line2 = "YOU GOT A CARD";
+
+	for (int i = 0; i < line1.length(); i++)
+		RenderChar(line1[i], tx + i * HUD_CHAR_SPACING, ty);
+
+	for (int i = 0; i < line2.length(); i++)
+		RenderChar(line2[i], tx + i * HUD_CHAR_SPACING - 10, ty + 12);
+
+	int cardType = CGameData::GetInstance()->GetCard(0);
+
+	int aniId = ID_ANI_STAR_CARD;
+
+	if (cardType == 1) aniId = ID_ANI_MUSHROOM_CARD;
+	else if (cardType == 2) aniId = ID_ANI_STAR_CARD;
+	else aniId = ID_ANI_FLOWER_CARD;
+
+	CAnimations::GetInstance()->Get(aniId)->Render(x + 80, y - 170);
+
 	for (int i = 0; i < cardCount; i++)
 	{
 		int cardType = CGameData::GetInstance()->GetCard(i);
@@ -179,6 +201,14 @@ void CHud::RenderChar(char c, float x, float y)
 	case 'R': aniId = ID_ANI_CHAR_R; break;
 	case 'L': aniId = ID_ANI_CHAR_L; break;
 	case 'D': aniId = ID_ANI_CHAR_D; break;
+	case 'A': aniId = ID_ANI_CHAR_A; break;
+	case 'C': aniId = ID_ANI_CHAR_C; break;
+	case 'E': aniId = ID_ANI_CHAR_E; break;
+	case 'G': aniId = ID_ANI_CHAR_G; break;
+	case 'S': aniId = ID_ANI_CHAR_S; break;
+	case 'T': aniId = ID_ANI_CHAR_T; break;
+	case 'U': aniId = ID_ANI_CHAR_U; break;
+	case 'Y': aniId = ID_ANI_CHAR_Y; break;
 	}
 
 	if (aniId != -1)
