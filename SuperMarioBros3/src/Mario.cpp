@@ -60,12 +60,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		for (LPGAMEOBJECT obj : *coObjects)
 		{
-			if (dynamic_cast<CKoopa*>(obj) || dynamic_cast<CGoomba*>(obj) || dynamic_cast<CParagoomba*>(obj) || dynamic_cast<CPiranhaPlant*>(obj))
+			if (dynamic_cast<CKoopa*>(obj) || dynamic_cast<CGoomba*>(obj) || dynamic_cast<CParagoomba*>(obj) || dynamic_cast<CPiranhaPlant*>(obj) || dynamic_cast<CYellowBrick*>(obj))
 			{
 				float ox, oy;
 				obj->GetPosition(ox, oy);
 
-				if (abs(ox - x) < MARIO_TAIL_RADIUS && abs(oy - y) < MARIO_TAIL_RADIUS)
+				if (abs(ox - x) < MARIO_TAIL_RADIUS && abs(oy - y) < MARIO_TAIL_RADIUS / 3)
 				{
 					if (CKoopa* koopa = dynamic_cast<CKoopa*>(obj))
 					{
@@ -82,6 +82,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					if (CPiranhaPlant* plant = dynamic_cast<CPiranhaPlant*>(obj))
 					{
 						plant->SetState(PIRANHA_PLANT_STATE_DIE);
+					}
+					if (CYellowBrick* brick = dynamic_cast<CYellowBrick*>(obj))
+					{
+						brick->Break();
 					}
 				}
 			}
@@ -451,7 +455,10 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 			point->SetState(POINT_STATE_100);
 			scene->AddObject(point);
 			CGameData::GetInstance()->AddPoint(100);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			if (level == MARIO_LEVEL_RACOON)
+				vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+			else
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 		else {
 			if (!koopa->IsDefend())
@@ -460,12 +467,18 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e) {
 				point->SetState(POINT_STATE_100);
 				scene->AddObject(point);
 				CGameData::GetInstance()->AddPoint(100);
-				vy = -MARIO_JUMP_DEFLECT_SPEED;
+				if (level == MARIO_LEVEL_RACOON)
+					vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+				else
+					vy = -MARIO_JUMP_DEFLECT_SPEED;
 			}
 			else if (koopa->IsKicked())
 			{
 				koopa->SetState(KOOPA_STATE_DEFEND);
-				vy = -MARIO_JUMP_DEFLECT_SPEED;
+				if (level == MARIO_LEVEL_RACOON)
+					vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+				else
+					vy = -MARIO_JUMP_DEFLECT_SPEED;
 			}
 			else if (koopa->IsDefend() && !koopa->IsKicked())
 			{
@@ -874,6 +887,7 @@ void CMario::SetState(int state)
 		isFlying = false;
 		ay = MARIO_RACOON_GRAVITY;
 		if (vy < 0) vy += MARIO_FLY_SPEED_Y / 2;
+		if (isTailAttacking) vy = 0;
 		break;
 
 	case MARIO_STATE_SIT:

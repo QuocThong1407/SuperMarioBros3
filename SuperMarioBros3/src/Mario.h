@@ -25,7 +25,7 @@
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
 #define MARIO_TAIL_ATTACK_TIME 300
-#define MARIO_TAIL_RADIUS 30
+#define MARIO_TAIL_RADIUS 25
 
 #define MARIO_STATE_DIE				-10
 #define MARIO_STATE_IDLE			0
@@ -260,6 +260,7 @@ public:
 	bool IsEnteringTunnel() { return isEnteringTunnel; }
 
 	void StartTailAttack();
+	int IsTailAttacking() { return isTailAttacking; }
 
 	void DropItem();
 };
