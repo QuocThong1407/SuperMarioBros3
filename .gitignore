@@ -19,6 +19,26 @@ Release/
 x64/
 ipch/
 
+# NuGet packages
+packages/
+
+# MSBuild and NuGet
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.assets.json
+*.csproj.user
+*.vcxproj.user
+
 # Other temp files
 *.tlog/
 *.lastbuildstate
+*.cache
+*.db
+*.bak
+*.tmp
+*.~*
+
+# Thumbs.db and desktop.ini (Windows-specific)
+Thumbs.db
+desktop.ini
